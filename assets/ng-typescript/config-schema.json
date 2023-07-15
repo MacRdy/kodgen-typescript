@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"index": {
+			"type": "boolean",
+			"default": true,
+			"description": "Create an index file with all exported entities"
+		},
+		"inlinePathParameters": {
+			"type": "boolean",
+			"default": true,
+			"description": "Inline path parameters mode. PathParameters models not appears in import entries"
+		},
+		"readonly": {
+			"type": "boolean",
+			"default": true,
+			"description": "Readonly model properties"
+		}
+	}
+}

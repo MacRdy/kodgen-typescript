@@ -1,0 +1,22 @@
+<%_ for (const importEntry of getImportEntries()) { -%>
+import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
+<%_ } -%>
+<%_ for (const model of models) { -%>
+
+<%_ const jsdocModelResult = jsdoc.build({ deprecated: model.deprecated, description: model.description }) -%>
+<%_ if (jsdocModelResult) { -%>
+<%- jsdocModelResult %>
+<%_ } -%>
+export interface <%= model.name %> {
+	<%_ for (const prop of model.properties) { -%>
+	<%_ const jsdocPropertyResult = jsdoc.build({ deprecated: prop.deprecated, description: prop.description }, 1) -%>
+	<%_ if (jsdocPropertyResult) { -%>
+<%- jsdocPropertyResult %>
+	<%_ } -%>
+	<%- config.readonly ? 'readonly ' : '' %><%- !isValidName(prop.name) ? `'${prop.name}'` : prop.name %><%- !prop.required ? '?' : '' %>: <%- prop.type %>;
+	<%_ } -%>
+	<%_ if (model.additionPropertiesTypeName) { -%>
+	<%- config.readonly ? 'readonly ' : '' %>[key: string]: <%- model.additionPropertiesTypeName %>;
+	<%_ } -%>
+}
+<%_ } -%>

@@ -1,0 +1,130 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams, HttpEvent, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { toQueryParams } from '../internals';
+<%_ for (const importEntry of getImportEntries()) { -%>
+import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
+<% } %>
+<%_ const jsdocServiceResult = jsdoc.build({ description }) -%>
+<%_ if (jsdocServiceResult) { -%>
+<%- jsdocServiceResult %>
+<%_ } -%>
+@Injectable({ providedIn: 'root' })
+export class <%- name %>Service {
+	private readonly baseUrl = '<%- baseUrl %>';
+
+	constructor(private readonly http: HttpClient) {}
+	<%_ for (const path of paths) { -%>
+
+	<%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
+	<%_ const jsdocResult = jsdoc.build(toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
+	<%_ if (jsdocResult) { -%>
+<%- jsdocResult %>
+	<%_ } -%>
+	<%_ if (multipart) { -%>
+	<%- path.name %>(
+		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe?: 'body',
+	): Observable<<%- path.response.typeName %>>;
+	<%- path.name %>(
+		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe?: 'events',
+		reportProgress?: boolean,
+	): Observable<HttpEvent<<%- path.response.typeName %>>>;
+	<%- path.name %>(
+		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe: 'body' | 'events' = 'body',
+		reportProgress?: boolean,
+	): Observable<<%- path.response.typeName %> | HttpEvent<<%- path.response.typeName %>>> {
+	<%_ } else { -%>
+	<%- path.name %>(
+		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+	): Observable<<%- path.response.typeName %>> {
+	<%_ } -%>
+		<%_ if (path.request.queryParametersMapping) { -%>
+		const params = new HttpParams({
+			fromString: toQueryParams({
+				<%_ for (const m of path.request.queryParametersMapping) { -%>
+				'<%- m.originalName %>': queryParams.<%- m.objectPath.join('?.') %>,
+				<%_ } -%>
+			}),
+		});
+
+		<%_ } -%>
+		<%_ if (multipart) { -%>
+		const formData = new FormData();
+		Object.entries(body).forEach(([key, value]) => formData.append(key, value));
+
+		<%_ } -%>
+		return this.http.request<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>(
+			'<%- path.method %>',
+			`${this.baseUrl}<%- parametrizeUrlPattern(path.urlPattern, config.inlinePathParameters, 'pathParams') %>`,
+			{
+				<%_ if (path.request.body && !multipart) { -%>
+				body: <%- path.request.body.typeName === 'string' ? 'JSON.stringify(body)' : 'body' %>,
+				<%_ } -%>
+				<%_ if (path.request.body && multipart) { -%>
+				body: formData,
+				observe: observe as any,
+				reportProgress,
+				<%_ } -%>
+				<%_ if (path.request.queryParametersMapping) { -%>
+				params,
+				<%_ } -%>
+				<%_ if (path.response.typeName === 'string') { -%>
+				responseType: 'text',
+				<%_ } -%>
+			},
+		);
+	}
+	<%_ } -%>
+}

@@ -7,6 +7,7 @@
 	"private": true,
 	"scripts": {
 		"build": "rimraf dist && mkdir dist && tsc --project tsconfig.build.json",
+		"postbuild": "copyfiles src/**/*.ejs dist",
 		"test": "jest",
 		"lint": "eslint src/**/*.ts",
 		"format:check": "prettier --list-different \"**/*{.ts,.js,.json}\"",
@@ -26,10 +27,14 @@
 	"files": [
 		"dist/**/*"
 	],
+	"peerDependencies": {
+		"kodgen": "^0.0.1"
+	},
 	"devDependencies": {
 		"@types/jest": "^29.2.0",
 		"@typescript-eslint/eslint-plugin": "^5.41.0",
 		"@typescript-eslint/parser": "^5.41.0",
+		"copyfiles": "^2.4.1",
 		"eslint": "^8.26.0",
 		"eslint-plugin-optimize-regex": "^1.2.1",
 		"eslint-plugin-sonarjs": "^0.16.0",

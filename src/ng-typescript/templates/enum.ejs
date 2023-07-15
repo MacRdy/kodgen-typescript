@@ -1,0 +1,17 @@
+<%_ const jsdocResult = jsdoc.build({ deprecated: model.deprecated, description: model.description }) -%>
+<%_ if (jsdocResult) { -%>
+<%- jsdocResult %>
+<%_ } -%>
+export enum <%= model.name %> {
+	<%_ for (const entry of model.entries) { -%>
+	<%_ const jsdocEntryResult = jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
+	<%_ if (jsdocEntryResult) { -%>
+<%- jsdocEntryResult %>
+	<%_ } -%>
+	<%_ if (model.isStringlyTyped) { -%>
+	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = '<%- entry.value %>',
+	<%_ } else { -%>
+	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- entry.value %>,
+	<%_ } -%>
+	<%_ } -%>
+}
