@@ -4,7 +4,6 @@
 	"description": "",
 	"main": "dist/src/index.js",
 	"types": "dist/src/index.d.ts",
-	"private": true,
 	"scripts": {
 		"build": "rimraf dist && mkdir dist && tsc --project tsconfig.build.json",
 		"postbuild": "copyfiles src/**/*.ejs dist",
