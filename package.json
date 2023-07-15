@@ -1,0 +1,44 @@
+{
+	"name": "kodgen-typescript",
+	"version": "0.0.1",
+	"description": "",
+	"main": "dist/src/index.js",
+	"types": "dist/src/index.d.ts",
+	"private": true,
+	"scripts": {
+		"build": "rimraf dist && mkdir dist && tsc --project tsconfig.build.json",
+		"test": "jest",
+		"lint": "eslint src/**/*.ts",
+		"format:check": "prettier --list-different \"**/*{.ts,.js,.json}\"",
+		"format:write": "prettier -w --list-different \"**/*{.ts,.js,.json}\"",
+		"prepack": "npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MacRdy/kodgen-typescript.git"
+	},
+	"author": "Anton Shibaev",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/MacRdy/kodgen-typescript/issues"
+	},
+	"homepage": "https://github.com/MacRdy/kodgen-typescript#readme",
+	"files": [
+		"dist/**/*"
+	],
+	"devDependencies": {
+		"@types/jest": "^29.2.0",
+		"@typescript-eslint/eslint-plugin": "^5.41.0",
+		"@typescript-eslint/parser": "^5.41.0",
+		"eslint": "^8.26.0",
+		"eslint-plugin-optimize-regex": "^1.2.1",
+		"eslint-plugin-sonarjs": "^0.16.0",
+		"jest": "^29.2.1",
+		"prettier": "^2.7.1",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^29.0.3",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.8.4"
+	},
+	"dependencies": {}
+}
