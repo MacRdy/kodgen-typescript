@@ -1,5 +1,6 @@
 import {
 	BODY_OBJECT_ORIGIN,
+	EnumEntryDef,
 	EnumModelDef,
 	FORM_DATA_OBJECT_ORIGIN,
 	IGeneratorFile,
@@ -10,6 +11,7 @@ import {
 	RESPONSE_OBJECT_ORIGIN,
 } from 'kodgen';
 import pathLib from 'path';
+import { toPascalCase } from '../../utils';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
@@ -38,7 +40,7 @@ export class TypescriptGeneratorEnumService {
 
 			for (const enumEntry of e.entries) {
 				const entry: ITsGenEnumEntry = {
-					name: enumEntry.name,
+					name: this.processEntryName(e, enumEntry),
 					value: enumEntry.value,
 					deprecated: enumEntry.deprecated,
 					description: enumEntry.description,
@@ -85,6 +87,18 @@ export class TypescriptGeneratorEnumService {
 		}
 
 		return files;
+	}
+
+	private processEntryName(enumDef: EnumModelDef, entry: EnumEntryDef): string {
+		if (entry.name === String(entry.value)) {
+			if (enumDef.type !== 'string') {
+				return `_${entry.name}`;
+			}
+
+			return toPascalCase(entry.name);
+		}
+
+		return entry.name;
 	}
 
 	private printVerbose(enumDef: EnumModelDef): void {
