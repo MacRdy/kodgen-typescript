@@ -1,4 +1,5 @@
-import { generator } from './generator';
+import { NgTypescriptGeneratorService } from 'generators/ng-typescript/ng-typescript-generator.service';
+import { IGeneratorPackage } from 'kodgen';
 
 export {
 	TsGenGenerateEnumName,
@@ -7,6 +8,10 @@ export {
 	TsGenGeneratePropertyName,
 	TsGenGenerateServiceName,
 	TsGenResolveSimpleType,
-} from './typescript/typescript-generator.model';
+} from './generators/typescript/typescript-generator.model';
 
-export default generator;
+export const generatorPackage: IGeneratorPackage = {
+	generators: [new NgTypescriptGeneratorService()],
+};
+
+export default generatorPackage;
