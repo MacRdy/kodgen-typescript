@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import { generateAjvErrorMessage, IDocument, IGeneratorFile } from 'kodgen';
 import pathLib from 'path';
-import configSchema from '../../assets/ng-typescript/config-schema.json';
+import configSchema from '../../../assets/ng-typescript/config-schema.json';
 import { ITsGenConfig } from '../typescript/typescript-generator.model';
 import { TypescriptGeneratorService } from '../typescript/typescript-generator.service';
 import { toKebabCase } from '../utils';

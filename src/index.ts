@@ -10,7 +10,7 @@ export {
 	TsGenResolveSimpleType,
 } from './generators/typescript/typescript-generator.model';
 
-export const generatorPackage: IGeneratorPackage = {
+const generatorPackage: IGeneratorPackage = {
 	generators: [new NgTypescriptGeneratorService()],
 };
 
