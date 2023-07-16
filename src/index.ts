@@ -1,5 +1,5 @@
-import { NgTypescriptGeneratorService } from 'generators/ng-typescript/ng-typescript-generator.service';
 import { IGeneratorPackage } from 'kodgen';
+import { NgTypescriptGeneratorService } from './generators/ng-typescript/ng-typescript-generator.service';
 
 export {
 	TsGenGenerateEnumName,
