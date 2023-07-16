@@ -1,10 +1,10 @@
 import Ajv from 'ajv';
-import { IDocument, IGeneratorFile, toKebabCase } from 'kodgen';
+import { generateAjvErrorMessage, IDocument, IGeneratorFile } from 'kodgen';
 import pathLib from 'path';
 import configSchema from '../../assets/ng-typescript/config-schema.json';
 import { ITsGenConfig } from '../typescript/typescript-generator.model';
 import { TypescriptGeneratorService } from '../typescript/typescript-generator.service';
-import { getAjvValidateErrorMessage } from '../utils';
+import { toKebabCase } from '../utils';
 
 export class NgTypescriptGeneratorService extends TypescriptGeneratorService {
 	getName(): string {
@@ -57,7 +57,7 @@ export class NgTypescriptGeneratorService extends TypescriptGeneratorService {
 
 		if (!validate(config)) {
 			throw new Error(
-				getAjvValidateErrorMessage(validate.errors, 'Invalid generator configuration'),
+				generateAjvErrorMessage('Invalid generator configuration', validate.errors),
 			);
 		}
 	}

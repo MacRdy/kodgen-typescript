@@ -6,9 +6,8 @@ import {
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
-	toCamelCase,
-	toPascalCase,
 } from 'kodgen';
+import { toCamelCase, toPascalCase } from '../utils';
 import {
 	TsGenGenerateEnumName,
 	TsGenGenerateModelName,

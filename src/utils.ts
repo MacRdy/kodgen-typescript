@@ -1,40 +1,11 @@
-import { ErrorObject } from 'ajv';
-import { ExtendedModelDef, ModelDef } from 'kodgen';
+import { camelCase, camelCaseTransformMerge } from 'camel-case';
+import kebabCase from 'just-kebab-case';
+import { pascalCase, pascalCaseTransformMerge } from 'pascal-case';
 
-export const getAjvValidateErrorMessage = (
-	errors?: ErrorObject[] | null,
-	title = 'Invalid configuration',
-): string => {
-	const message = errors
-		?.map(e => [e.instancePath, e.message].filter(Boolean).join(' '))
-		.join('\n- ');
+export const toPascalCase = (...parts: string[]): string =>
+	pascalCase(parts.join(' '), { transform: pascalCaseTransformMerge });
 
-	return `${title}:\n- ${message ?? 'Unknown error'}`;
-};
+export const toKebabCase = (...parts: string[]): string => kebabCase(parts.join(' '));
 
-export interface Type<T> extends Function {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	new (...args: any[]): T;
-}
-
-export const selectModels = <T extends ModelDef>(
-	models: ModelDef[],
-	type: Type<T>,
-	store = new Set<T>(),
-): T[] => {
-	for (const entity of models) {
-		if (entity instanceof type) {
-			store.add(entity);
-		} else if (entity instanceof ExtendedModelDef) {
-			selectModels(entity.def, type, store);
-		}
-	}
-
-	return [...store.values()];
-};
-
-export const mergeParts = (...parts: string[]): string =>
-	parts
-		.map(x => x.trim())
-		.filter(Boolean)
-		.join(' ');
+export const toCamelCase = (...parts: string[]): string =>
+	camelCase(parts.join(' '), { transform: camelCaseTransformMerge });

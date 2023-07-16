@@ -22,7 +22,6 @@ import {
 	isReferenceModel,
 } from 'kodgen';
 import pathLib from 'path';
-import { mergeParts } from '../../utils';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
@@ -328,7 +327,7 @@ export class TypescriptGeneratorModelService {
 				prop.name = prop.name.substring(key.length + 1);
 			}
 
-			const object = new ObjectModelDef(mergeParts(objectModel.name, key), {
+			const object = new ObjectModelDef(`${objectModel.name} ${key}`, {
 				properties,
 				origin: objectModel.origin,
 				originalName: objectModel.originalName,
