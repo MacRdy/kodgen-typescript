@@ -1,4 +1,4 @@
-# TypeScript generators
+# Kodgen TypeScript generators
 
 Collection of TypeScript entities generators for [kodgen](https://github.com/MacRdy/kodgen). JSDoc included.
 
@@ -10,9 +10,15 @@ npm install kodgen-typescript --save-dev
 
 ## `ng-typescript`
 
+```
+kodgen generate -p kodgen-typescript -g ng-typescript -i YOUR_SPEC_PATH
+```
+
 Angular-TypeScript generator
 
-### Configuration object ([schema](assets/generators/ng-typescript-config-schema.json))
+### Configuration object
+
+[JSON Schema](assets/generators/ng-typescript-config-schema.json)
 
 | Property                | Default | Description                                                                                                                   |
 |-------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------|
