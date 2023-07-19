@@ -1,6 +1,6 @@
 # Kodgen TypeScript generators
 
-Collection of TypeScript entities generators for [kodgen](https://github.com/MacRdy/kodgen). JSDoc included.
+Collection of TypeScript generators for [kodgen](https://github.com/MacRdy/kodgen). JSDoc included.
 
 ## Installation
 
