@@ -20,7 +20,7 @@
 		"useNativeEnums": {
 			"type": "boolean",
 			"default": false,
-			"description": "Generate native enum entities instead of type-const option"
+			"description": "Generate native enum entities instead of type-const variant"
 		}
 	}
 }

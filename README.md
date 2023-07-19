@@ -25,9 +25,9 @@ kodgen generate -p kodgen-typescript -g ng-typescript -o ./api -i YOUR_SPEC_PATH
 | `index`                 | `true`  | Create an index file with all exported entities                                                                               |
 | `inlinePathParameters`  | `true`  | Inline path parameters mode. PathParameters property types appear in imports, but not the PathParameters models themselves    |
 | `readonly`              | `true`  | Readonly model properties                                                                                                     |
-| `useNativeEnums`        | `false` | Generate native enum entities instead of type-const option                                                                    |
+| `useNativeEnums`        | `false` | Generate native enum entities instead of type-const variant                                                                    |
 
-[JSON Schema (ng-typescript config)](assets/generators/ng-typescript-config-schema.json)
+[JSON Schema (ng-typescript config)](assets/ng-typescript-config-schema.json)
 
 #### Available hooks
 
