@@ -12,11 +12,11 @@ npm install kodgen-typescript --save-dev
 
 ### `ng-typescript`
 
+Angular-TypeScript generator
+
 ```
 kodgen generate -p kodgen-typescript -g ng-typescript -o ./api -i YOUR_SPEC_PATH
 ```
-
-Angular-TypeScript generator
 
 #### Configuration object
 
@@ -25,6 +25,7 @@ Angular-TypeScript generator
 | `index`                 | `true`  | Create an index file with all exported entities                                                                               |
 | `inlinePathParameters`  | `true`  | Inline path parameters mode. PathParameters property types appear in imports, but not the PathParameters models themselves    |
 | `readonly`              | `true`  | Readonly model properties                                                                                                     |
+| `useNativeEnums`        | `false` | Generate native enum entities instead of type-const option                                                                    |
 
 [JSON Schema (ng-typescript config)](assets/generators/ng-typescript-config-schema.json)
 

@@ -16,6 +16,11 @@
 			"type": "boolean",
 			"default": true,
 			"description": "Readonly model properties"
+		},
+		"useNativeEnums": {
+			"type": "boolean",
+			"default": false,
+			"description": "Generate native enum entities instead of type-const option"
 		}
 	}
 }

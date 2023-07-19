@@ -4,6 +4,7 @@ export interface ITsGenConfig {
 	index?: boolean;
 	inlinePathParameters?: boolean;
 	readonly?: boolean;
+	useNativeEnums?: boolean;
 }
 
 export interface ITsGenParameters {

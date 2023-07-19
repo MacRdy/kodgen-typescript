@@ -45,6 +45,7 @@ export class NgTypescriptGeneratorService extends TypescriptGeneratorService {
 			index: userConfig?.index ?? true,
 			inlinePathParameters: userConfig?.inlinePathParameters ?? true,
 			readonly: userConfig?.readonly ?? true,
+			useNativeEnums: userConfig?.useNativeEnums,
 		};
 
 		this.validate(config);
