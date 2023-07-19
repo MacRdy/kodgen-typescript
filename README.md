@@ -8,17 +8,17 @@ Collection of TypeScript entities generators for [kodgen](https://github.com/Mac
 npm install kodgen-typescript --save-dev
 ```
 
-## `ng-typescript`
+## Generators
+
+### `ng-typescript`
 
 ```
-kodgen generate -p kodgen-typescript -g ng-typescript -i YOUR_SPEC_PATH
+kodgen generate -p kodgen-typescript -g ng-typescript -o ./api -i YOUR_SPEC_PATH
 ```
 
 Angular-TypeScript generator
 
-### Configuration object
-
-[JSON Schema](assets/generators/ng-typescript-config-schema.json)
+#### Configuration object
 
 | Property                | Default | Description                                                                                                                   |
 |-------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -26,7 +26,9 @@ Angular-TypeScript generator
 | `inlinePathParameters`  | `true`  | Inline path parameters mode. PathParameters property types appear in imports, but not the PathParameters models themselves    |
 | `readonly`              | `true`  | Readonly model properties                                                                                                     |
 
-### Available hooks
+[JSON Schema (ng-typescript config)](assets/generators/ng-typescript-config-schema.json)
+
+#### Available hooks
 
 | Hook name               | Type                         | Description                                                                      |
 |-------------------------|------------------------------|----------------------------------------------------------------------------------|
