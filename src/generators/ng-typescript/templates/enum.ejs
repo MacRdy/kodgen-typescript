@@ -1,8 +1,8 @@
-<%_ if (config.useNativeEnums) { -%>
 <%_ const jsdocResult = jsdoc.build({ deprecated: model.deprecated, description: model.description }) -%>
 <%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 <%_ } -%>
+<%_ if (config.useNativeEnums) { -%>
 export enum <%= model.name %> {
 	<%_ for (const entry of model.entries) { -%>
 	<%_ const jsdocEntryResult = jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
@@ -17,10 +17,6 @@ export enum <%= model.name %> {
 	<%_ } -%>
 }
 <%_ } else { -%>
-<%_ const jsdocResult = jsdoc.build({ deprecated: model.deprecated, description: model.description }) -%>
-<%_ if (jsdocResult) { -%>
-<%- jsdocResult %>
-<%_ } -%>
 export type <%= model.name %> =
 	<%_ for (const entry of model.entries) { -%>
 	<%_ if (model.isStringlyTyped) { -%>
