@@ -74,6 +74,7 @@ export class TypescriptGeneratorEnumService {
 				templateData: {
 					config,
 					model: generatedModel,
+					extensions: e.extensions,
 					jsdoc: new JSDocService(),
 					isValidName: (entityName: string) => !/^[^a-zA-Z_$]|[^\w$]/g.test(entityName),
 				},
