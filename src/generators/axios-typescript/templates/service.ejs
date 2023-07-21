@@ -1,6 +1,6 @@
 import { AxiosProgressEvent } from 'axios';
 
-import { client, toQueryParams } from '<%- resolvePath('./internals') %>';
+import { apiRequest, toQueryParams } from '<%- resolvePath('./internals') %>';
 <%_ for (const importEntry of getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <% } %>
@@ -47,11 +47,11 @@ export class <%- name %>Api {
 		Object.entries(body ?? {}).forEach(([key, value]) => formData.append(key, value));
 
 		<%_ } -%>
-		return client.request<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>({
+		return apiRequest<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>({
 			method: '<%- path.method %>',
 			url: `<%- parametrizeUrlPattern(path.urlPattern, config.inlinePathParameters, 'pathParams') %>`,
 			<%_ if (path.request.queryParametersMapping) { -%>
-			params: new URLSearchParams(params),
+			params,
 			<%_ } -%>
 			<%_ if (path.request.body && !multipart) { -%>
 			data: <%- path.request.body.typeName === 'string' ? 'JSON.stringify(body)' : 'body' %>,
@@ -63,7 +63,7 @@ export class <%- name %>Api {
 			<%_ if (path.response.typeName === 'string') { -%>
 			responseType: 'text',
 			<%_ } -%>
-		}).then(x => x.data);
+		});
 	}
 	<%_ } -%>
 }

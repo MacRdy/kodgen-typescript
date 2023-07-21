@@ -12,7 +12,11 @@ export {
 } from './generators/typescript/typescript-generator.model';
 
 const generatorPackage: IGeneratorPackage = {
-	generators: [new NgTypescriptGeneratorService(), new AxiosTypescriptGeneratorService()],
+	generators: [
+		new NgTypescriptGeneratorService(),
+		new AxiosTypescriptGeneratorService(),
+		// new FetchTypescriptGeneratorService(),
+	],
 };
 
 export default generatorPackage;

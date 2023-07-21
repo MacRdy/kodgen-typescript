@@ -1,8 +1,33 @@
-import axios from 'axios';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
-export const client = axios.create({
+const client = axios.create({
     baseURL: '<%- baseUrl %>',
 });
+
+export const apiRequest = <T>(config: {
+	method: string,
+	url: string,
+	params?: string,
+	data?: unknown,
+	responseType?: 'text' | 'json',
+	onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
+}): Promise<T> => {
+	const { method, url, responseType, data, onUploadProgress, params } = config;
+
+	const axiosConfig: AxiosRequestConfig = {
+		method,
+		url,
+		data,
+		responseType,
+		onUploadProgress,
+	};
+
+	if (params) {
+		axiosConfig.params = new URLSearchParams(params);
+	}
+
+	return client.request<T>(axiosConfig).then(x => x.data);
+}
 
 export const toQueryParams = (params: Record<string, unknown>, prefix?: string): string => {
 	const queryParams: string[] = [];
