@@ -102,7 +102,7 @@ export class <%- name %>Service {
 		<%_ } -%>
 		<%_ if (multipart) { -%>
 		const formData = new FormData();
-		Object.entries(body).forEach(([key, value]) => formData.append(key, value));
+		Object.entries(body ?? {}).forEach(([key, value]) => formData.append(key, value));
 
 		<%_ } -%>
 		return this.http.request<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>(
