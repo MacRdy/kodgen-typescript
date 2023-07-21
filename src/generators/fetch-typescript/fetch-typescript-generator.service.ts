@@ -6,9 +6,9 @@ import { ITsGenConfig } from '../typescript/typescript-generator.model';
 import { TypescriptGeneratorService } from '../typescript/typescript-generator.service';
 import { toPascalCase } from '../utils';
 
-export class AxiosTypescriptGeneratorService extends TypescriptGeneratorService {
+export class FetchTypescriptGeneratorService extends TypescriptGeneratorService {
 	getName(): string {
-		return 'axios-typescript';
+		return 'fetch-typescript';
 	}
 
 	getTemplateDir(): string {
