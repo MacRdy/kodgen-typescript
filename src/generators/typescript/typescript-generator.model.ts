@@ -1,4 +1,4 @@
-import { Extensions, PathMethod } from 'kodgen';
+import { Extensions, IDocument, PathMethod } from 'kodgen';
 
 export interface ITsGenConfig {
 	index?: boolean;
@@ -164,3 +164,6 @@ export type TsGenGenerateOperationName = (
  * @returns {string} - Resolved TypeScript type name
  */
 export type TsGenResolveSimpleType = (type: string, format?: string) => string | undefined;
+
+export const baseUrlSelector = (document: IDocument): string | undefined =>
+	document.servers[0]?.url;

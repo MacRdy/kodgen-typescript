@@ -2,7 +2,7 @@ import Ajv from 'ajv';
 import { generateAjvErrorMessage, IDocument, IGeneratorFile } from 'kodgen';
 import pathLib from 'path';
 import configSchema from '../../../assets/ng-typescript-config-schema.json';
-import { ITsGenConfig } from '../typescript/typescript-generator.model';
+import { baseUrlSelector, ITsGenConfig } from '../typescript/typescript-generator.model';
 import { TypescriptGeneratorService } from '../typescript/typescript-generator.service';
 import { toPascalCase } from '../utils';
 
@@ -36,7 +36,7 @@ export class AxiosTypescriptGeneratorService extends TypescriptGeneratorService 
 			path: 'internals.ts',
 			template: 'internals',
 			templateData: {
-				baseUrl: doc.servers[0]?.url,
+				baseUrl: baseUrlSelector(doc),
 			},
 		});
 

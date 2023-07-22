@@ -62,7 +62,7 @@ export abstract class TypescriptGeneratorService implements IGenerator<ITsGenCon
 		const files: IGeneratorFile[] = [
 			...this.enumService.generate(enums, config),
 			...this.modelService.generate(objects, config),
-			...this.pathService.generate(doc.paths, doc.servers, doc.tags, config),
+			...this.pathService.generate(doc, doc.paths, doc.servers, doc.tags, config),
 		];
 
 		if (config?.index) {

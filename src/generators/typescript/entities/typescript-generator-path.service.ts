@@ -1,5 +1,6 @@
 import {
 	EnumModelDef,
+	IDocument,
 	IGeneratorFile,
 	IImportRegistryEntry,
 	ObjectModelDef,
@@ -7,8 +8,6 @@ import {
 	PathRequestBody,
 	PathResponse,
 	Printer,
-	Server,
-	Tag,
 } from 'kodgen';
 import pathLib from 'path';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
@@ -23,6 +22,7 @@ import {
 	ITsGenPathRequest,
 	ITsGenPathResponse,
 	ITsPathBody,
+	baseUrlSelector,
 } from '../typescript-generator.model';
 import { TypescriptGeneratorModelService } from './typescript-generator-model.service';
 
@@ -40,20 +40,15 @@ export class TypescriptGeneratorPathService {
 		private readonly config: ITsGenParameters,
 	) {}
 
-	generate(
-		paths: PathDef[],
-		servers: Server[],
-		tags: Tag[],
-		config: ITsGenConfig,
-	): IGeneratorFile[] {
-		const baseUrl = servers[0]?.url;
+	generate(doc: IDocument, config: ITsGenConfig): IGeneratorFile[] {
+		const baseUrl = baseUrlSelector(doc);
 
 		const files: IGeneratorFile[] = [];
 
 		const pathsToGenerate: Record<string, PathDef[]> = {};
 		const commonPaths: PathDef[] = [];
 
-		for (const path of paths) {
+		for (const path of doc.paths) {
 			if (path.tags?.length) {
 				for (const tag of path.tags) {
 					const tagPaths = pathsToGenerate[tag] ?? [];
@@ -79,7 +74,7 @@ export class TypescriptGeneratorPathService {
 				),
 				p,
 				baseUrl,
-				tags.find(x => x.name === name)?.description,
+				doc.tags.find(x => x.name === name)?.description,
 			);
 
 			files.push(file);
