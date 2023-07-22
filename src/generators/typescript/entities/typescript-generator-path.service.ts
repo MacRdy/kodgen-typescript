@@ -2,7 +2,6 @@ import {
 	EnumModelDef,
 	IGeneratorFile,
 	IImportRegistryEntry,
-	ImportRegistryService,
 	ObjectModelDef,
 	PathDef,
 	PathRequestBody,
@@ -12,6 +11,7 @@ import {
 	Tag,
 } from 'kodgen';
 import pathLib from 'path';
+import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { IJSDocConfig, IJSDocConfigParam } from '../jsdoc/jsdoc.model';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';

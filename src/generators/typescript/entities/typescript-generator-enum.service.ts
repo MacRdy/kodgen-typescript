@@ -4,13 +4,13 @@ import {
 	EnumModelDef,
 	FORM_DATA_OBJECT_ORIGIN,
 	IGeneratorFile,
-	ImportRegistryService,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Printer,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
 } from 'kodgen';
 import pathLib from 'path';
+import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { toPascalCase } from '../../utils';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';

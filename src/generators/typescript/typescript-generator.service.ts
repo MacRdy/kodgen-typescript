@@ -4,11 +4,11 @@ import {
 	IDocument,
 	IGenerator,
 	IGeneratorFile,
-	ImportRegistryService,
 	ModelDef,
 	ObjectModelDef,
 	Type,
 } from 'kodgen';
+import { ImportRegistryService } from '../../import-registry/import-registry.service';
 import { TypescriptGeneratorEnumService } from './entities/typescript-generator-enum.service';
 import { TypescriptGeneratorModelService } from './entities/typescript-generator-model.service';
 import { TypescriptGeneratorPathService } from './entities/typescript-generator-path.service';

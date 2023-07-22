@@ -8,7 +8,6 @@ import {
 	Hooks,
 	IGeneratorFile,
 	IImportRegistryEntry,
-	ImportRegistryService,
 	ModelDef,
 	NullModelDef,
 	ObjectModelDef,
@@ -22,6 +21,7 @@ import {
 	isReferenceModel,
 } from 'kodgen';
 import pathLib from 'path';
+import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
