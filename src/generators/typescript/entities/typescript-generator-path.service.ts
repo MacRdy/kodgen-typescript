@@ -144,7 +144,7 @@ export class TypescriptGeneratorPathService {
 				baseUrl,
 				paths,
 				jsdoc: new JSDocService(),
-				resolvePath: (to: string): string => {
+				relativeTo: (to: string): string => {
 					const resolved = pathLib.posix.relative(pathLib.posix.dirname(filePath), to);
 
 					return resolved.startsWith('.') ? resolved : `./${resolved}`;
