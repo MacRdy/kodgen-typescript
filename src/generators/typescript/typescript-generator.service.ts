@@ -51,18 +51,18 @@ export abstract class TypescriptGeneratorService implements IGenerator<ITsGenCon
 
 	abstract prepareConfig(userConfig?: ITsGenConfig): ITsGenConfig;
 
-	generate(doc: IDocument, config?: ITsGenConfig): IGeneratorFile[] {
+	generate(document: IDocument, config?: ITsGenConfig): IGeneratorFile[] {
 		if (!config) {
 			throw new Error('Generator config not defined');
 		}
 
-		const enums = this.selectModels(doc.models, EnumModelDef);
-		const objects = this.selectModels(doc.models, ObjectModelDef);
+		const enums = this.selectModels(document.models, EnumModelDef);
+		const objects = this.selectModels(document.models, ObjectModelDef);
 
 		const files: IGeneratorFile[] = [
-			...this.enumService.generate(enums, config),
-			...this.modelService.generate(objects, config),
-			...this.pathService.generate(doc, doc.paths, doc.servers, doc.tags, config),
+			...this.enumService.generate(document, enums, config),
+			...this.modelService.generate(document, objects, config),
+			...this.pathService.generate(document, config),
 		];
 
 		if (config?.index) {

@@ -6,6 +6,7 @@ import {
 	ExtendedModelDef,
 	FORM_DATA_OBJECT_ORIGIN,
 	Hooks,
+	IDocument,
 	IGeneratorFile,
 	IImportRegistryEntry,
 	ModelDef,
@@ -44,7 +45,11 @@ export class TypescriptGeneratorModelService {
 		private readonly config: ITsGenParameters,
 	) {}
 
-	generate(models: ObjectModelDef[], config: ITsGenConfig): IGeneratorFile[] {
+	generate(
+		document: IDocument,
+		models: ObjectModelDef[],
+		config: ITsGenConfig,
+	): IGeneratorFile[] {
 		const files: IGeneratorFile[] = [];
 
 		for (const model of models) {
@@ -67,6 +72,7 @@ export class TypescriptGeneratorModelService {
 				path,
 				template: this.config.modelTemplate,
 				templateData: {
+					document,
 					config,
 					models: fileModels,
 					extensions: model.extensions,

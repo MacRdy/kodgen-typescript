@@ -3,6 +3,7 @@ import {
 	EnumEntryDef,
 	EnumModelDef,
 	FORM_DATA_OBJECT_ORIGIN,
+	IDocument,
 	IGeneratorFile,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Printer,
@@ -30,7 +31,7 @@ export class TypescriptGeneratorEnumService {
 		private readonly config: ITsGenParameters,
 	) {}
 
-	generate(enums: EnumModelDef[], config: ITsGenConfig): IGeneratorFile[] {
+	generate(document: IDocument, enums: EnumModelDef[], config: ITsGenConfig): IGeneratorFile[] {
 		const files: IGeneratorFile[] = [];
 
 		for (const e of enums) {
@@ -72,6 +73,7 @@ export class TypescriptGeneratorEnumService {
 				),
 				template: this.config.enumTemplate,
 				templateData: {
+					document,
 					config,
 					model: generatedModel,
 					extensions: e.extensions,

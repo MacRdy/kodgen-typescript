@@ -40,15 +40,15 @@ export class TypescriptGeneratorPathService {
 		private readonly config: ITsGenParameters,
 	) {}
 
-	generate(doc: IDocument, config: ITsGenConfig): IGeneratorFile[] {
-		const baseUrl = baseUrlSelector(doc);
+	generate(document: IDocument, config: ITsGenConfig): IGeneratorFile[] {
+		const baseUrl = baseUrlSelector(document);
 
 		const files: IGeneratorFile[] = [];
 
 		const pathsToGenerate: Record<string, PathDef[]> = {};
 		const commonPaths: PathDef[] = [];
 
-		for (const path of doc.paths) {
+		for (const path of document.paths) {
 			if (path.tags?.length) {
 				for (const tag of path.tags) {
 					const tagPaths = pathsToGenerate[tag] ?? [];
@@ -67,6 +67,7 @@ export class TypescriptGeneratorPathService {
 
 			const file = this.getSpecificServiceFile(
 				config,
+				document,
 				entityName,
 				pathLib.posix.join(
 					this.config.pathDir,
@@ -74,7 +75,7 @@ export class TypescriptGeneratorPathService {
 				),
 				p,
 				baseUrl,
-				doc.tags.find(x => x.name === name)?.description,
+				document.tags.find(x => x.name === name)?.description,
 			);
 
 			files.push(file);
@@ -85,6 +86,7 @@ export class TypescriptGeneratorPathService {
 
 			const file = this.getSpecificServiceFile(
 				config,
+				document,
 				this.namingService.generateServiceName('common'),
 				this.config.pathFileNameResolver('common'),
 				commonPaths,
@@ -99,6 +101,7 @@ export class TypescriptGeneratorPathService {
 
 	private getSpecificServiceFile(
 		config: ITsGenConfig,
+		document: IDocument,
 		name: string,
 		filePath: string,
 		pathDefs: PathDef[],
@@ -138,6 +141,7 @@ export class TypescriptGeneratorPathService {
 			path: filePath,
 			template: 'service',
 			templateData: {
+				document,
 				config,
 				name,
 				description,
