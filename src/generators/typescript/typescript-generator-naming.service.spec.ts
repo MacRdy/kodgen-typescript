@@ -21,14 +21,14 @@ const hooksGetOrDefaultSpy = jest.spyOn(Hooks, 'getOrDefault');
 describe('typescript-generator-naming-service', () => {
 	beforeAll(() => {
 		hooksGetOrDefaultSpy.mockImplementation((_, fn) => fn);
-
-		toCamelCaseMock.mockImplementation((...args) => args.join(''));
-		toPascalCaseMock.mockImplementation((...args) => args.join(''));
 	});
 
 	beforeEach(() => {
-		toCamelCaseMock.mockClear();
-		toPascalCaseMock.mockClear();
+		toCamelCaseMock.mockReset();
+		toPascalCaseMock.mockReset();
+
+		toCamelCaseMock.mockImplementation((...args) => args.join(''));
+		toPascalCaseMock.mockImplementation((...args) => args.join(''));
 	});
 
 	afterAll(() => {

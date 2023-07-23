@@ -59,11 +59,11 @@ describe('typescript-generator-path-service', () => {
 	});
 
 	beforeEach(() => {
-		toKebabCaseMock.mockClear();
+		toKebabCaseMock.mockReset();
 
-		modelServiceMock.mockClear();
-		storageServiceMock.mockClear();
-		namingServiceGlobalMock.mockClear();
+		modelServiceMock.mockReset();
+		storageServiceMock.mockReset();
+		namingServiceGlobalMock.mockReset();
 	});
 
 	afterAll(() => {

@@ -31,11 +31,11 @@ const testingTypescriptGeneratorConfig: ITsGenParameters = {
 
 describe('typescript-generator-enum-service', () => {
 	beforeEach(() => {
-		importRegistryServiceMock.mockClear();
-		storageServiceMock.mockClear();
-		namingServiceMock.mockClear();
-		toKebabCaseMock.mockClear();
-		selectModelsMock.mockClear();
+		importRegistryServiceMock.mockReset();
+		storageServiceMock.mockReset();
+		namingServiceMock.mockReset();
+		toKebabCaseMock.mockReset();
+		selectModelsMock.mockReset();
 	});
 
 	it('should generate file from enum def', () => {

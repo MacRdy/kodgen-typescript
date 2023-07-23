@@ -46,9 +46,9 @@ const pathServiceMock = jest.mocked(TypescriptGeneratorPathService);
 
 describe('typescript-generator-service', () => {
 	beforeEach(() => {
-		enumServiceMock.mockClear();
-		modelServiceMock.mockClear();
-		pathServiceMock.mockClear();
+		enumServiceMock.mockReset();
+		modelServiceMock.mockReset();
+		pathServiceMock.mockReset();
 	});
 
 	it('should return name', () => {
