@@ -12,7 +12,7 @@ import {
 } from 'kodgen';
 import pathLib from 'path';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
-import { toPascalCase } from '../../utils';
+import { selectModels, toPascalCase } from '../../utils';
 import { JSDocService } from '../jsdoc/jsdoc.service';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
@@ -31,7 +31,9 @@ export class TypescriptGeneratorEnumService {
 		private readonly config: ITsGenParameters,
 	) {}
 
-	generate(document: IDocument, enums: EnumModelDef[], config: ITsGenConfig): IGeneratorFile[] {
+	generate(document: IDocument, config: ITsGenConfig): IGeneratorFile[] {
+		const enums = selectModels(document.models, EnumModelDef);
+
 		const files: IGeneratorFile[] = [];
 
 		for (const e of enums) {

@@ -1,13 +1,4 @@
-import {
-	EnumModelDef,
-	ExtendedModelDef,
-	IDocument,
-	IGenerator,
-	IGeneratorFile,
-	ModelDef,
-	ObjectModelDef,
-	Type,
-} from 'kodgen';
+import { IDocument, IGenerator, IGeneratorFile } from 'kodgen';
 import { ImportRegistryService } from '../../import-registry/import-registry.service';
 import { TypescriptGeneratorEnumService } from './entities/typescript-generator-enum.service';
 import { TypescriptGeneratorModelService } from './entities/typescript-generator-model.service';
@@ -56,12 +47,9 @@ export abstract class TypescriptGeneratorService implements IGenerator<ITsGenCon
 			throw new Error('Generator config not defined');
 		}
 
-		const enums = this.selectModels(document.models, EnumModelDef);
-		const objects = this.selectModels(document.models, ObjectModelDef);
-
 		const files: IGeneratorFile[] = [
-			...this.enumService.generate(document, enums, config),
-			...this.modelService.generate(document, objects, config),
+			...this.enumService.generate(document, config),
+			...this.modelService.generate(document, config),
 			...this.pathService.generate(document, config),
 		];
 
@@ -76,21 +64,5 @@ export abstract class TypescriptGeneratorService implements IGenerator<ITsGenCon
 		}
 
 		return files.map(x => ({ ...x, path: `${x.path}.ts` }));
-	}
-
-	private selectModels<T extends ModelDef>(
-		models: ModelDef[],
-		type: Type<T>,
-		store = new Set<T>(),
-	): T[] {
-		for (const entity of models) {
-			if (entity instanceof type) {
-				store.add(entity);
-			} else if (entity instanceof ExtendedModelDef) {
-				this.selectModels(entity.def, type, store);
-			}
-		}
-
-		return [...store.values()];
 	}
 }

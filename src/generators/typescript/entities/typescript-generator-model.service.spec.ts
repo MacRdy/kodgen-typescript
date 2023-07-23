@@ -1,30 +1,29 @@
-import { ExtendedModelDef } from '../../../core/entities/schema-entities/extended-model-def.model';
-import { NullModelDef } from '../../../core/entities/schema-entities/null-model-def.model';
-import { ObjectModelDef } from '../../../core/entities/schema-entities/object-model-def.model';
 import {
+	ExtendedModelDef,
+	Hooks,
+	IDocument,
+	NullModelDef,
+	ObjectModelDef,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
+	Property,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
-} from '../../../core/entities/schema-entities/path-def.model';
-import { Property } from '../../../core/entities/schema-entities/property.model';
-import { SimpleModelDef } from '../../../core/entities/schema-entities/simple-model-def.model';
-import { Hooks } from '../../../core/hooks/hooks';
-import { ImportRegistryService } from '../../../core/import-registry/import-registry.service';
-import { mergeParts, toKebabCase } from '../../../core/utils';
+	SimpleModelDef,
+} from 'kodgen';
+import { ImportRegistryService } from '../../../import-registry/import-registry.service';
+import { selectModels, toKebabCase } from '../../utils';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
 import { ITsGenModel, ITsGenParameters } from '../typescript-generator.model';
 import { TypescriptGeneratorModelService } from './typescript-generator-model.service';
 
-jest.mock('../../../core/import-registry/import-registry.service');
-jest.mock('../../../core/hooks/hooks');
-jest.mock('../../../core/printer/printer');
-jest.mock('../../../core/utils');
+jest.mock('../../../import-registry/import-registry.service');
+jest.mock('../../utils');
 jest.mock('../typescript-generator.model');
 jest.mock('../typescript-generator-naming.service');
 
 const namingServiceGlobalMock = jest.mocked(TypescriptGeneratorNamingService);
 const toKebabCaseMock = jest.mocked(toKebabCase);
-const mergePartsMock = jest.mocked(mergeParts);
+const selectModelsMock = jest.mocked(selectModels);
 
 const hooksGetOrDefaultSpy = jest.spyOn(Hooks, 'getOrDefault');
 
@@ -46,8 +45,9 @@ describe('typescript-generator-model-service', () => {
 	});
 
 	beforeEach(() => {
-		namingServiceGlobalMock.mockClear();
-		toKebabCaseMock.mockClear();
+		namingServiceGlobalMock.mockReset();
+		toKebabCaseMock.mockReset();
+		selectModelsMock.mockReset();
 	});
 
 	afterAll(() => {
@@ -92,7 +92,16 @@ describe('typescript-generator-model-service', () => {
 
 		jest.mocked(namingService).generateUniqueModelName.mockReturnValueOnce('ModelName');
 
-		const result = service.generate([modelDef], { inlinePathParameters: true });
+		const doc: IDocument = {
+			models: [modelDef],
+			paths: [],
+			servers: [],
+			tags: [],
+		};
+
+		selectModelsMock.mockReturnValueOnce([modelDef]);
+
+		const result = service.generate(doc, { inlinePathParameters: true });
 
 		expect(result.length).toStrictEqual(1);
 		expect(registry.createLink).toHaveBeenCalledTimes(1);
@@ -163,7 +172,16 @@ describe('typescript-generator-model-service', () => {
 			'AdditionalProperty',
 		);
 
-		const result = service.generate([modelDef], { inlinePathParameters: true });
+		const doc: IDocument = {
+			models: [modelDef],
+			paths: [],
+			servers: [],
+			tags: [],
+		};
+
+		selectModelsMock.mockReturnValueOnce([modelDef]);
+
+		const result = service.generate(doc, { inlinePathParameters: true });
 
 		expect(result.length).toStrictEqual(1);
 		expect(registry.createLink).toHaveBeenCalledTimes(1);
@@ -234,9 +252,6 @@ describe('typescript-generator-model-service', () => {
 		);
 
 		toKebabCaseMock.mockReturnValueOnce('query-parameters-model-name');
-		mergePartsMock.mockReturnValueOnce('queryParametersModelName Filter');
-		mergePartsMock.mockReturnValueOnce('queryParametersModelName Filter Current');
-		mergePartsMock.mockReturnValueOnce('queryParametersModelName Filter Current Date');
 
 		namingServiceMock.generateUniquePropertyName.mockReturnValueOnce('filter');
 		namingServiceMock.generateUniquePropertyName.mockReturnValueOnce('current');
@@ -257,7 +272,16 @@ describe('typescript-generator-model-service', () => {
 			'QueryParametersModelNameFilterCurrentDate',
 		);
 
-		const result = service.generate([modelDef], { inlinePathParameters: true });
+		const doc: IDocument = {
+			models: [modelDef],
+			paths: [],
+			servers: [],
+			tags: [],
+		};
+
+		selectModelsMock.mockReturnValueOnce([modelDef]);
+
+		const result = service.generate(doc, { inlinePathParameters: true });
 
 		expect(result.length).toStrictEqual(1);
 		expect(registry.createLink).toHaveBeenCalledTimes(4);
@@ -400,7 +424,16 @@ describe('typescript-generator-model-service', () => {
 			testingTypescriptGeneratorConfig,
 		);
 
-		const result = service.generate([pathModelDef, queryModelDef], {
+		const doc: IDocument = {
+			models: [pathModelDef, queryModelDef],
+			paths: [],
+			servers: [],
+			tags: [],
+		};
+
+		selectModelsMock.mockReturnValueOnce([pathModelDef, queryModelDef]);
+
+		const result = service.generate(doc, {
 			inlinePathParameters: true,
 		});
 

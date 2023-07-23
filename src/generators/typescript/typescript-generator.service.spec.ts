@@ -1,5 +1,5 @@
-import { toKebabCase } from '../../core/utils';
-import { IGeneratorFile } from '../../generators/generator.model';
+import { IGeneratorFile } from 'kodgen';
+import { toKebabCase } from '../utils';
 import { TypescriptGeneratorEnumService } from './entities/typescript-generator-enum.service';
 import { TypescriptGeneratorModelService } from './entities/typescript-generator-model.service';
 import { TypescriptGeneratorPathService } from './entities/typescript-generator-path.service';

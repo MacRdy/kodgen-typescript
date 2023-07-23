@@ -1,4 +1,4 @@
-import { EnumModelDef } from '../../core/entities/schema-entities/enum-model-def.model';
+import { EnumModelDef } from 'kodgen';
 import { TypescriptGeneratorStorageService } from './typescript-generator-storage.service';
 import { ITsGenEnum } from './typescript-generator.model';
 

@@ -1,17 +1,13 @@
-import {
-	EnumEntryDef,
-	EnumModelDef,
-} from '../../../core/entities/schema-entities/enum-model-def.model';
-import { ImportRegistryService } from '../../../core/import-registry/import-registry.service';
-import { toKebabCase } from '../../../core/utils';
+import { EnumEntryDef, EnumModelDef, IDocument } from 'kodgen';
+import { ImportRegistryService } from '../../../import-registry/import-registry.service';
+import { selectModels, toKebabCase } from '../../utils';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
 import { TypescriptGeneratorStorageService } from '../typescript-generator-storage.service';
 import { ITsGenEnum, ITsGenParameters } from '../typescript-generator.model';
 import { TypescriptGeneratorEnumService } from './typescript-generator-enum.service';
 
-jest.mock('../../../core/import-registry/import-registry.service');
-jest.mock('../../../core/printer/printer');
-jest.mock('../../../core/utils');
+jest.mock('../../../import-registry/import-registry.service');
+jest.mock('../../utils');
 jest.mock('../typescript-generator-storage.service');
 jest.mock('../typescript-generator-naming.service');
 
@@ -19,6 +15,7 @@ const importRegistryServiceMock = jest.mocked(ImportRegistryService);
 const storageServiceMock = jest.mocked(TypescriptGeneratorStorageService);
 const namingServiceMock = jest.mocked(TypescriptGeneratorNamingService);
 const toKebabCaseMock = jest.mocked(toKebabCase);
+const selectModelsMock = jest.mocked(selectModels);
 
 const testingTypescriptGeneratorConfig: ITsGenParameters = {
 	enumDir: 'enums',
@@ -38,6 +35,7 @@ describe('typescript-generator-enum-service', () => {
 		storageServiceMock.mockClear();
 		namingServiceMock.mockClear();
 		toKebabCaseMock.mockClear();
+		selectModelsMock.mockClear();
 	});
 
 	it('should generate file from enum def', () => {
@@ -68,7 +66,16 @@ describe('typescript-generator-enum-service', () => {
 			testingTypescriptGeneratorConfig,
 		);
 
-		const result = service.generate([enumDef], {});
+		const doc: IDocument = {
+			models: [enumDef],
+			paths: [],
+			servers: [],
+			tags: [],
+		};
+
+		selectModelsMock.mockReturnValueOnce([enumDef]);
+
+		const result = service.generate(doc, {});
 
 		expect(result.length).toBe(1);
 
