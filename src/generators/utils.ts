@@ -1,15 +1,13 @@
-import { camelCase, camelCaseTransformMerge } from 'camel-case';
+import camelCase from 'just-camel-case';
 import kebabCase from 'just-kebab-case';
+import pascalCase from 'just-pascal-case';
 import { ExtendedModelDef, ModelDef, Type } from 'kodgen';
-import { pascalCase, pascalCaseTransformMerge } from 'pascal-case';
 
-export const toPascalCase = (...parts: string[]): string =>
-	pascalCase(parts.join(' '), { transform: pascalCaseTransformMerge });
+export const toPascalCase = (...parts: string[]): string => pascalCase(parts.join(' '));
 
 export const toKebabCase = (...parts: string[]): string => kebabCase(parts.join(' '));
 
-export const toCamelCase = (...parts: string[]): string =>
-	camelCase(parts.join(' '), { transform: camelCaseTransformMerge });
+export const toCamelCase = (...parts: string[]): string => camelCase(parts.join(' '));
 
 export const selectModels = <T extends ModelDef>(
 	models: ModelDef[],
