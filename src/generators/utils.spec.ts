@@ -11,6 +11,14 @@ describe('utils', () => {
 			expect(toPascalCase('IStringType')).toStrictEqual('IStringType');
 		});
 
+		it('should lower capitals in abbr', () => {
+			expect(toPascalCase('UI')).toStrictEqual('Ui');
+		});
+
+		it('should not prefix numbers', () => {
+			expect(toPascalCase('000Pascal')).toStrictEqual('000Pascal');
+		});
+
 		it('should merge words correctly', () => {
 			expect(toPascalCase('I/files/get')).toStrictEqual('IFilesGet');
 		});
@@ -28,6 +36,10 @@ describe('utils', () => {
 		it('should remain only letters and numbers', () => {
 			expect(toKebabCase('!@#$%^&*()\\/,.?<>{}[];:\'"1word')).toStrictEqual('1word');
 		});
+
+		it('should not prefix numbers', () => {
+			expect(toKebabCase('000kebab')).toStrictEqual('000kebab');
+		});
 	});
 
 	describe('toCamelCase', () => {
@@ -43,6 +55,10 @@ describe('utils', () => {
 			expect(toCamelCase('MyController_OperationId')).toStrictEqual(
 				'myControllerOperationId',
 			);
+		});
+
+		it('should not prefix numbers', () => {
+			expect(toCamelCase('000camel')).toStrictEqual('000camel');
 		});
 	});
 
