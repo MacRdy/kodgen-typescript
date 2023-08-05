@@ -1,23 +1,23 @@
 import {
-	ArrayModelDef,
+	ArrayModel,
 	BODY_OBJECT_ORIGIN,
-	ConstantModelDef,
-	EnumModelDef,
-	ExtendedModelDef,
+	ConstantModel,
+	EnumModel,
+	ExtendedModel,
 	FORM_DATA_OBJECT_ORIGIN,
 	Hooks,
 	IDocument,
 	IGeneratorFile,
-	ModelDef,
-	NullModelDef,
-	ObjectModelDef,
+	Model,
+	NullModel,
+	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Printer,
 	Property,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
-	SimpleModelDef,
-	UnknownModelDef,
+	SimpleModel,
+	UnknownModel,
 	isReferenceModel,
 } from 'kodgen';
 import pathLib from 'path';
@@ -47,7 +47,7 @@ export class TypescriptGeneratorModelService {
 	) {}
 
 	generate(document: IDocument, config: ITsGenConfig): IGeneratorFile[] {
-		const models = selectModels(document.models, ObjectModelDef);
+		const models = selectModels(document.models, ObjectModel);
 
 		const files: IGeneratorFile[] = [];
 
@@ -105,7 +105,7 @@ export class TypescriptGeneratorModelService {
 		return files;
 	}
 
-	private printVerbose(model: ObjectModelDef): void {
+	private printVerbose(model: ObjectModel): void {
 		let originName: string;
 
 		switch (model.origin) {
@@ -157,21 +157,21 @@ export class TypescriptGeneratorModelService {
 	}
 
 	private resolveDef(
-		entity: ModelDef | Property,
-	): EnumModelDef | ObjectModelDef | SimpleModelDef | ExtendedModelDef | UnknownModelDef {
+		entity: Model | Property,
+	): EnumModel | ObjectModel | SimpleModel | ExtendedModel | UnknownModel {
 		if (entity instanceof Property) {
 			return this.resolveDef(entity.def);
-		} else if (entity instanceof ArrayModelDef) {
+		} else if (entity instanceof ArrayModel) {
 			return this.resolveDef(entity.items);
 		} else {
 			return entity;
 		}
 	}
 
-	resolveDependencies(entity: ModelDef | Property): string[] {
+	resolveDependencies(entity: Model | Property): string[] {
 		const def = this.resolveDef(entity);
 
-		if (def instanceof ExtendedModelDef) {
+		if (def instanceof ExtendedModel) {
 			return def.def.flatMap(x => this.resolveDependencies(x));
 		} else if (!isReferenceModel(def)) {
 			return [];
@@ -181,24 +181,24 @@ export class TypescriptGeneratorModelService {
 	}
 
 	// eslint-disable-next-line sonarjs/cognitive-complexity
-	resolveType(prop: ModelDef | Property, isArray?: boolean, ignoreArray?: boolean): string {
+	resolveType(prop: Model | Property, isArray?: boolean, ignoreArray?: boolean): string {
 		let type: string | undefined;
 
 		if (prop instanceof Property) {
 			type = this.resolveType(prop.def, false, ignoreArray);
-		} else if (prop instanceof EnumModelDef || prop instanceof ObjectModelDef) {
+		} else if (prop instanceof EnumModel || prop instanceof ObjectModel) {
 			type = this.resolveReferenceEntityName(prop);
-		} else if (prop instanceof ArrayModelDef) {
+		} else if (prop instanceof ArrayModel) {
 			type = this.resolveType(prop.items, true, ignoreArray);
-		} else if (prop instanceof ExtendedModelDef && prop.def.length) {
+		} else if (prop instanceof ExtendedModel && prop.def.length) {
 			const delimiter = prop.type === 'and' ? '&' : '|';
 			type = prop.def.map(x => this.resolveType(x)).join(` ${delimiter} `);
 			type = prop.def.length > 1 ? `(${type})` : type;
-		} else if (prop instanceof NullModelDef) {
+		} else if (prop instanceof NullModel) {
 			type = 'null';
-		} else if (prop instanceof ConstantModelDef) {
+		} else if (prop instanceof ConstantModel) {
 			type = typeof prop.value === 'string' ? `'${prop.value}'` : `${prop.value}`;
-		} else if (prop instanceof SimpleModelDef) {
+		} else if (prop instanceof SimpleModel) {
 			const fn = Hooks.getOrDefault<TsGenResolveSimpleType>('resolveSimpleType', (t, f) =>
 				this.resolveSimpleType(t, f),
 			);
@@ -225,7 +225,7 @@ export class TypescriptGeneratorModelService {
 		return undefined;
 	}
 
-	private resolveReferenceEntityName(entity: EnumModelDef | ObjectModelDef): string {
+	private resolveReferenceEntityName(entity: EnumModel | ObjectModel): string {
 		const storageInfo = this.storage.get(entity);
 
 		if (storageInfo?.name) {
@@ -233,7 +233,7 @@ export class TypescriptGeneratorModelService {
 		}
 
 		const name =
-			entity instanceof EnumModelDef
+			entity instanceof EnumModel
 				? this.namingService.generateUniqueEnumName(entity)
 				: this.namingService.generateUniqueModelName(entity);
 
@@ -259,8 +259,8 @@ export class TypescriptGeneratorModelService {
 		return this.importRegistry.getImportEntries(dependencies, currentFilePath);
 	}
 
-	private getModels(objectModel: ObjectModelDef): ITsGenModel[] {
-		let defs: ObjectModelDef[] = [objectModel];
+	private getModels(objectModel: ObjectModel): ITsGenModel[] {
+		let defs: ObjectModel[] = [objectModel];
 
 		if (objectModel.origin === QUERY_PARAMETERS_OBJECT_ORIGIN) {
 			defs = this.restructModel(objectModel);
@@ -303,8 +303,8 @@ export class TypescriptGeneratorModelService {
 		return models;
 	}
 
-	private restructModel(objectModel: ObjectModelDef): ObjectModelDef[] {
-		const newModels: ObjectModelDef[] = [objectModel];
+	private restructModel(objectModel: ObjectModel): ObjectModel[] {
+		const newModels: ObjectModel[] = [objectModel];
 
 		const structure = objectModel.properties.reduce<Record<string, Property[]>>((acc, prop) => {
 			const parts = prop.name.split('.');
@@ -332,7 +332,7 @@ export class TypescriptGeneratorModelService {
 				prop.name = prop.name.substring(key.length + 1);
 			}
 
-			const object = new ObjectModelDef(`${objectModel.name} ${key}`, {
+			const object = new ObjectModel(`${objectModel.name} ${key}`, {
 				properties,
 				origin: objectModel.origin,
 				originalName: objectModel.originalName,
@@ -351,7 +351,7 @@ export class TypescriptGeneratorModelService {
 	}
 
 	private remapProperties(
-		objectModel: ObjectModelDef,
+		objectModel: ObjectModel,
 		baseOriginalNamePath: string[] = [],
 		baseObjectPath: string[] = [],
 	): ITsGenPropertyMapping[] {
@@ -367,7 +367,7 @@ export class TypescriptGeneratorModelService {
 			const objectPath = [...baseObjectPath, newName];
 			const originalNamePath = [...baseOriginalNamePath, oldName];
 
-			if (prop.def instanceof ObjectModelDef) {
+			if (prop.def instanceof ObjectModel) {
 				mapping.push(...this.remapProperties(prop.def, originalNamePath, objectPath));
 			} else {
 				mapping.push({

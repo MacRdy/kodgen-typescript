@@ -1,17 +1,17 @@
 import {
-	ExtendedModelDef,
+	ExtendedModel,
 	Hooks,
 	IDocument,
 	IGeneratorFile,
-	NullModelDef,
-	ObjectModelDef,
+	NullModel,
+	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Path,
 	PathRequestBody,
 	PathResponse,
 	Property,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
-	SimpleModelDef,
+	SimpleModel,
 	Tag,
 } from 'kodgen';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
@@ -157,11 +157,11 @@ describe('typescript-generator-path-service', () => {
 	it('should generate file (with parameters)', () => {
 		toKebabCaseMock.mockReturnValueOnce('my-api');
 
-		const pathParameters = new ObjectModelDef('/api get Request Path Parameters', {
+		const pathParameters = new ObjectModel('/api get Request Path Parameters', {
 			properties: [
 				new Property(
 					'PathParam1',
-					new ExtendedModelDef('or', [new SimpleModelDef('string'), new NullModelDef()]),
+					new ExtendedModel('or', [new SimpleModel('string'), new NullModel()]),
 					{
 						required: true,
 					},
@@ -170,13 +170,13 @@ describe('typescript-generator-path-service', () => {
 			origin: PATH_PARAMETERS_OBJECT_ORIGIN,
 		});
 
-		const queryParameters = new ObjectModelDef('/api get Request Query Parameters', {
+		const queryParameters = new ObjectModel('/api get Request Query Parameters', {
 			properties: [
 				new Property(
 					'QueryParam1',
-					new ExtendedModelDef('or', [
-						new SimpleModelDef('integer', { format: 'int32' }),
-						new NullModelDef(),
+					new ExtendedModel('or', [
+						new SimpleModel('integer', { format: 'int32' }),
+						new NullModel(),
 					]),
 					{
 						required: true,
@@ -335,10 +335,10 @@ describe('typescript-generator-path-service', () => {
 	it('should generate file (with body and response)', () => {
 		toKebabCaseMock.mockReturnValueOnce('my-api');
 
-		const requestBodyDef = new SimpleModelDef('string');
+		const requestBodyDef = new SimpleModel('string');
 		const requestBody = new PathRequestBody('application/json', requestBodyDef);
 
-		const responseDef = new SimpleModelDef('boolean');
+		const responseDef = new SimpleModel('boolean');
 		const response = new PathResponse('200', 'application/json', responseDef);
 
 		const pathDef = new Path('/api', 'POST', {

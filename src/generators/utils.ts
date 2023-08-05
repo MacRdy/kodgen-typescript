@@ -1,5 +1,5 @@
 import { camelCase, camelCaseTransformMerge } from 'camel-case';
-import { ExtendedModelDef, ModelDef, Type } from 'kodgen';
+import { ExtendedModel, Model, Type } from 'kodgen';
 import { paramCase } from 'param-case';
 import { pascalCase, pascalCaseTransformMerge } from 'pascal-case';
 
@@ -11,15 +11,15 @@ export const toKebabCase = (...parts: string[]): string => paramCase(parts.join(
 export const toCamelCase = (...parts: string[]): string =>
 	camelCase(parts.join(' '), { transform: camelCaseTransformMerge });
 
-export const selectModels = <T extends ModelDef>(
-	models: ModelDef[],
+export const selectModels = <T extends Model>(
+	models: Model[],
 	type: Type<T>,
 	store = new Set<T>(),
 ): T[] => {
 	for (const entity of models) {
 		if (entity instanceof type) {
 			store.add(entity);
-		} else if (entity instanceof ExtendedModelDef) {
+		} else if (entity instanceof ExtendedModel) {
 			selectModels(entity.def, type, store);
 		}
 	}

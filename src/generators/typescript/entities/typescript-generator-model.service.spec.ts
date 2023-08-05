@@ -1,13 +1,13 @@
 import {
-	ExtendedModelDef,
+	ExtendedModel,
 	Hooks,
 	IDocument,
-	NullModelDef,
-	ObjectModelDef,
+	NullModel,
+	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Property,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
-	SimpleModelDef,
+	SimpleModel,
 } from 'kodgen';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { selectModels, toKebabCase } from '../../utils';
@@ -58,20 +58,20 @@ describe('typescript-generator-model-service', () => {
 		const properties: Property[] = [
 			new Property(
 				'prop1',
-				new ExtendedModelDef('or', [
-					new SimpleModelDef('integer', { format: 'int32' }),
-					new NullModelDef(),
+				new ExtendedModel('or', [
+					new SimpleModel('integer', { format: 'int32' }),
+					new NullModel(),
 				]),
 				{
 					required: true,
 				},
 			),
-			new Property('prop2', new SimpleModelDef('string')),
+			new Property('prop2', new SimpleModel('string')),
 		];
 
-		const modelDef = new ObjectModelDef('modelName', {
+		const modelDef = new ObjectModel('modelName', {
 			properties,
-			additionalProperties: new SimpleModelDef('integer', { format: 'int32' }),
+			additionalProperties: new SimpleModel('integer', { format: 'int32' }),
 			extensions: {
 				'x-custom': true,
 			},
@@ -149,9 +149,9 @@ describe('typescript-generator-model-service', () => {
 	});
 
 	it('should catch additionalProperties as dependency', () => {
-		const additionalProperties = new ObjectModelDef('additionalProperty');
+		const additionalProperties = new ObjectModel('additionalProperty');
 
-		const modelDef = new ObjectModelDef('modelName', {
+		const modelDef = new ObjectModel('modelName', {
 			additionalProperties,
 		});
 
@@ -214,28 +214,28 @@ describe('typescript-generator-model-service', () => {
 		const properties: Property[] = [
 			new Property(
 				'Filter.Current.Date.From',
-				new ExtendedModelDef('or', [
-					new SimpleModelDef('string', { format: 'date-time' }),
-					new NullModelDef(),
+				new ExtendedModel('or', [
+					new SimpleModel('string', { format: 'date-time' }),
+					new NullModel(),
 				]),
 				{ required: true },
 			),
 			new Property(
 				'Filter.Current.Date.To',
-				new SimpleModelDef('string', { format: 'date-time' }),
+				new SimpleModel('string', { format: 'date-time' }),
 			),
 			new Property(
 				'Filter.Current.ClientId',
-				new ExtendedModelDef('or', [
-					new SimpleModelDef('string', { format: 'int32' }),
-					new NullModelDef(),
+				new ExtendedModel('or', [
+					new SimpleModel('string', { format: 'int32' }),
+					new NullModel(),
 				]),
 				{ required: true },
 			),
-			new Property('Id', new SimpleModelDef('string')),
+			new Property('Id', new SimpleModel('string')),
 		];
 
-		const modelDef = new ObjectModelDef('queryParametersModelName', {
+		const modelDef = new ObjectModel('queryParametersModelName', {
 			properties,
 			origin: QUERY_PARAMETERS_OBJECT_ORIGIN,
 		});
@@ -403,13 +403,13 @@ describe('typescript-generator-model-service', () => {
 	});
 
 	it('should skip inline path parameters origin', () => {
-		const pathModelDef = new ObjectModelDef('pathModelName', {
-			properties: [new Property('prop', new SimpleModelDef('string'))],
+		const pathModelDef = new ObjectModel('pathModelName', {
+			properties: [new Property('prop', new SimpleModel('string'))],
 			origin: PATH_PARAMETERS_OBJECT_ORIGIN,
 		});
 
-		const queryModelDef = new ObjectModelDef('queryModelName', {
-			properties: [new Property('prop', new SimpleModelDef('string'))],
+		const queryModelDef = new ObjectModel('queryModelName', {
+			properties: [new Property('prop', new SimpleModel('string'))],
 			origin: QUERY_PARAMETERS_OBJECT_ORIGIN,
 		});
 

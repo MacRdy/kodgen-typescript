@@ -2,7 +2,7 @@ import {
 	BODY_OBJECT_ORIGIN,
 	FORM_DATA_OBJECT_ORIGIN,
 	Hooks,
-	ObjectModelDef,
+	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
@@ -38,7 +38,7 @@ describe('typescript-generator-naming-service', () => {
 	it('should generate unique name', () => {
 		const service = new TypescriptGeneratorNamingService();
 
-		const entity = new ObjectModelDef('Test');
+		const entity = new ObjectModel('Test');
 
 		expect(service.generateUniqueEnumName(entity)).toStrictEqual('Test  ');
 		expect(service.generateUniqueEnumName(entity)).toStrictEqual('Test 1 ');
@@ -75,7 +75,7 @@ describe('typescript-generator-naming-service', () => {
 	it('should generate correct name by origin', () => {
 		const service = new TypescriptGeneratorNamingService();
 
-		const entity = new ObjectModelDef('Test');
+		const entity = new ObjectModel('Test');
 
 		expect(service.generateUniqueModelName(entity)).toStrictEqual('Test  ');
 

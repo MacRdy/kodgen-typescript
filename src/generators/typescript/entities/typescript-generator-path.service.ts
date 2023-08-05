@@ -1,8 +1,8 @@
 import {
-	EnumModelDef,
+	EnumModel,
 	IDocument,
 	IGeneratorFile,
-	ObjectModelDef,
+	ObjectModel,
 	Path,
 	PathRequestBody,
 	PathResponse,
@@ -325,7 +325,7 @@ export class TypescriptGeneratorPathService {
 			typeName: this.modelService.resolveType(responseType),
 			media: response?.media,
 			description:
-				responseType instanceof EnumModelDef || responseType instanceof ObjectModelDef
+				responseType instanceof EnumModel || responseType instanceof ObjectModel
 					? responseType.description
 					: undefined,
 		};

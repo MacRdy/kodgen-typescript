@@ -1,4 +1,4 @@
-import { EnumModelDef } from 'kodgen';
+import { EnumModel } from 'kodgen';
 import { TypescriptGeneratorStorageService } from './typescript-generator-storage.service';
 import { ITsGenEnum } from './typescript-generator.model';
 
@@ -6,7 +6,7 @@ describe('typescript-generator-storage-service', () => {
 	it('should store set records correcly', () => {
 		const service = new TypescriptGeneratorStorageService();
 
-		const enumDef = new EnumModelDef('enumDef', 'integer', []);
+		const enumDef = new EnumModel('enumDef', 'integer', []);
 
 		expect(service.get(enumDef)).toBeUndefined();
 

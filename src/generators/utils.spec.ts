@@ -1,4 +1,4 @@
-import { EnumModelDef, ExtendedModelDef, ModelDef, NullModelDef, ObjectModelDef } from 'kodgen';
+import { EnumModel, ExtendedModel, Model, NullModel, ObjectModel } from 'kodgen';
 import { selectModels, toCamelCase, toKebabCase, toPascalCase } from './utils';
 
 describe('utils', () => {
@@ -64,32 +64,32 @@ describe('utils', () => {
 
 	describe('selectModels', () => {
 		it('should select models by type', () => {
-			const enumModelDef = new EnumModelDef('name', 'integer', []);
+			const enumModelDef = new EnumModel('name', 'integer', []);
 
-			const objectModelDef1 = new ObjectModelDef('name');
-			const objectModelDef2 = new ObjectModelDef('name');
+			const objectModelDef1 = new ObjectModel('name');
+			const objectModelDef2 = new ObjectModel('name');
 
-			const nullModelDef = new NullModelDef();
+			const nullModelDef = new NullModel();
 
-			const extendedModelDef = new ExtendedModelDef('or', [objectModelDef2, nullModelDef]);
+			const extendedModelDef = new ExtendedModel('or', [objectModelDef2, nullModelDef]);
 
-			const store: ModelDef[] = [
+			const store: Model[] = [
 				enumModelDef,
 				objectModelDef1,
 				objectModelDef2,
 				extendedModelDef,
 			];
 
-			const result1 = selectModels(store, EnumModelDef);
+			const result1 = selectModels(store, EnumModel);
 			expect(result1.length).toBe(1);
 			expect(result1[0]).toBe(enumModelDef);
 
-			const result2 = selectModels(store, ObjectModelDef);
+			const result2 = selectModels(store, ObjectModel);
 			expect(result2.length).toBe(2);
 			expect(result2[0]).toBe(objectModelDef1);
 			expect(result2[1]).toBe(objectModelDef2);
 
-			const result3 = selectModels(store, NullModelDef);
+			const result3 = selectModels(store, NullModel);
 			expect(result3.length).toBe(1);
 			expect(result3[0]).toBe(nullModelDef);
 		});

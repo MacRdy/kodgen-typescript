@@ -1,7 +1,7 @@
 import {
 	BODY_OBJECT_ORIGIN,
 	EnumEntry,
-	EnumModelDef,
+	EnumModel,
 	FORM_DATA_OBJECT_ORIGIN,
 	IDocument,
 	IGeneratorFile,
@@ -32,7 +32,7 @@ export class TypescriptGeneratorEnumService {
 	) {}
 
 	generate(document: IDocument, config: ITsGenConfig): IGeneratorFile[] {
-		const enums = selectModels(document.models, EnumModelDef);
+		const enums = selectModels(document.models, EnumModel);
 
 		const files: IGeneratorFile[] = [];
 
@@ -94,7 +94,7 @@ export class TypescriptGeneratorEnumService {
 		return files;
 	}
 
-	private processEntryName(enumDef: EnumModelDef, entry: EnumEntry): string {
+	private processEntryName(enumDef: EnumModel, entry: EnumEntry): string {
 		if (entry.name === String(entry.value)) {
 			if (enumDef.type !== 'string') {
 				return `_${entry.name}`;
@@ -106,7 +106,7 @@ export class TypescriptGeneratorEnumService {
 		return entry.name;
 	}
 
-	private printVerbose(enumDef: EnumModelDef): void {
+	private printVerbose(enumDef: EnumModel): void {
 		let originName: string;
 
 		switch (enumDef.origin) {
