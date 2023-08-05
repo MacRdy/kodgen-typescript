@@ -93,6 +93,7 @@ describe('typescript-generator-model-service', () => {
 		jest.mocked(namingService).generateUniqueModelName.mockReturnValueOnce('ModelName');
 
 		const doc: IDocument = {
+			info: {},
 			models: [modelDef],
 			paths: [],
 			servers: [],
@@ -173,6 +174,7 @@ describe('typescript-generator-model-service', () => {
 		);
 
 		const doc: IDocument = {
+			info: {},
 			models: [modelDef],
 			paths: [],
 			servers: [],
@@ -273,6 +275,7 @@ describe('typescript-generator-model-service', () => {
 		);
 
 		const doc: IDocument = {
+			info: {},
 			models: [modelDef],
 			paths: [],
 			servers: [],
@@ -425,6 +428,7 @@ describe('typescript-generator-model-service', () => {
 		);
 
 		const doc: IDocument = {
+			info: {},
 			models: [pathModelDef, queryModelDef],
 			paths: [],
 			servers: [],

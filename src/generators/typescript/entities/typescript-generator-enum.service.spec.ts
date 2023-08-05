@@ -1,4 +1,4 @@
-import { EnumEntryDef, EnumModelDef, IDocument } from 'kodgen';
+import { EnumEntry, EnumModelDef, IDocument } from 'kodgen';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { selectModels, toKebabCase } from '../../utils';
 import { TypescriptGeneratorNamingService } from '../typescript-generator-naming.service';
@@ -41,9 +41,9 @@ describe('typescript-generator-enum-service', () => {
 	it('should generate file from enum def', () => {
 		toKebabCaseMock.mockReturnValueOnce('enum-name');
 
-		const entries: EnumEntryDef[] = [
-			new EnumEntryDef('entry1', 1),
-			new EnumEntryDef('entry2', 2),
+		const entries: EnumEntry[] = [
+			new EnumEntry('entry1', 1),
+			new EnumEntry('entry2', 2),
 		];
 
 		const enumDef = new EnumModelDef('enumName', 'integer', entries, {
@@ -67,6 +67,7 @@ describe('typescript-generator-enum-service', () => {
 		);
 
 		const doc: IDocument = {
+			info: {},
 			models: [enumDef],
 			paths: [],
 			servers: [],

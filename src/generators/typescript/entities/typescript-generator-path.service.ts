@@ -2,14 +2,14 @@ import {
 	EnumModelDef,
 	IDocument,
 	IGeneratorFile,
-	IImportRegistryEntry,
 	ObjectModelDef,
-	PathDef,
+	Path,
 	PathRequestBody,
 	PathResponse,
 	Printer,
 } from 'kodgen';
 import pathLib from 'path';
+import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { IJSDocConfig, IJSDocConfigParam } from '../jsdoc/jsdoc.model';
 import { JSDocService } from '../jsdoc/jsdoc.service';
@@ -45,8 +45,8 @@ export class TypescriptGeneratorPathService {
 
 		const files: IGeneratorFile[] = [];
 
-		const pathsToGenerate: Record<string, PathDef[]> = {};
-		const commonPaths: PathDef[] = [];
+		const pathsToGenerate: Record<string, Path[]> = {};
+		const commonPaths: Path[] = [];
 
 		for (const path of document.paths) {
 			if (path.tags?.length) {
@@ -104,7 +104,7 @@ export class TypescriptGeneratorPathService {
 		document: IDocument,
 		name: string,
 		filePath: string,
-		pathDefs: PathDef[],
+		pathDefs: Path[],
 		baseUrl?: string,
 		description?: string,
 	): IGeneratorFile {
@@ -238,7 +238,7 @@ export class TypescriptGeneratorPathService {
 		};
 	}
 
-	private getRequest(path: PathDef): ITsGenPathRequest {
+	private getRequest(path: Path): ITsGenPathRequest {
 		const pathParametersType =
 			path.requestPathParameters &&
 			this.storage.get(path.requestPathParameters)?.generatedModel;
@@ -271,7 +271,7 @@ export class TypescriptGeneratorPathService {
 		};
 	}
 
-	private getPathRequestBody(path: PathDef): PathRequestBody | undefined {
+	private getPathRequestBody(path: Path): PathRequestBody | undefined {
 		let body: PathRequestBody | undefined;
 
 		if (path.requestBodies && path.requestBodies.length > 1) {
@@ -293,7 +293,7 @@ export class TypescriptGeneratorPathService {
 		return body;
 	}
 
-	private getResponse(path: PathDef): ITsGenPathResponse {
+	private getResponse(path: Path): ITsGenPathResponse {
 		let response = this.getMostRelatedResponse(
 			path.responses ?? [],
 			this.successResponseCodeRe,

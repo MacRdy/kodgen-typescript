@@ -1,6 +1,6 @@
 import {
 	BODY_OBJECT_ORIGIN,
-	EnumEntryDef,
+	EnumEntry,
 	EnumModelDef,
 	FORM_DATA_OBJECT_ORIGIN,
 	IDocument,
@@ -94,7 +94,7 @@ export class TypescriptGeneratorEnumService {
 		return files;
 	}
 
-	private processEntryName(enumDef: EnumModelDef, entry: EnumEntryDef): string {
+	private processEntryName(enumDef: EnumModelDef, entry: EnumEntry): string {
 		if (entry.name === String(entry.value)) {
 			if (enumDef.type !== 'string') {
 				return `_${entry.name}`;

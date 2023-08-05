@@ -6,7 +6,7 @@ import {
 	NullModelDef,
 	ObjectModelDef,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
-	PathDef,
+	Path,
 	PathRequestBody,
 	PathResponse,
 	Property,
@@ -73,7 +73,7 @@ describe('typescript-generator-path-service', () => {
 	it('should generate file (simple)', () => {
 		toKebabCaseMock.mockReturnValueOnce('my-api');
 
-		const pathDef = new PathDef('/api', 'GET', {
+		const pathDef = new Path('/api', 'GET', {
 			operationId: 'operationId',
 			tags: ['myApi'],
 			extensions: { 'x-custom': true },
@@ -104,6 +104,7 @@ describe('typescript-generator-path-service', () => {
 		namingServiceMock.generateUniqueOperationName.mockReturnValueOnce('getApi');
 
 		const doc: IDocument = {
+			info: {},
 			models: [],
 			paths: [pathDef],
 			servers: [],
@@ -185,7 +186,7 @@ describe('typescript-generator-path-service', () => {
 			origin: QUERY_PARAMETERS_OBJECT_ORIGIN,
 		});
 
-		const pathDef = new PathDef('/api', 'GET', {
+		const pathDef = new Path('/api', 'GET', {
 			requestPathParameters: pathParameters,
 			requestQueryParameters: queryParameters,
 			tags: ['myApi'],
@@ -278,6 +279,7 @@ describe('typescript-generator-path-service', () => {
 		});
 
 		const doc: IDocument = {
+			info: {},
 			models: [],
 			paths: [pathDef],
 			servers: [],
@@ -339,7 +341,7 @@ describe('typescript-generator-path-service', () => {
 		const responseDef = new SimpleModelDef('boolean');
 		const response = new PathResponse('200', 'application/json', responseDef);
 
-		const pathDef = new PathDef('/api', 'POST', {
+		const pathDef = new Path('/api', 'POST', {
 			requestBodies: [requestBody],
 			responses: [response],
 			tags: ['myApi'],
@@ -378,6 +380,7 @@ describe('typescript-generator-path-service', () => {
 		modelServiceInstanceMock?.resolveType.mockReturnValueOnce('boolean');
 
 		const doc: IDocument = {
+			info: {},
 			models: [],
 			paths: [pathDef],
 			servers: [],

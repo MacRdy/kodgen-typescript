@@ -8,7 +8,6 @@ import {
 	Hooks,
 	IDocument,
 	IGeneratorFile,
-	IImportRegistryEntry,
 	ModelDef,
 	NullModelDef,
 	ObjectModelDef,
@@ -22,6 +21,7 @@ import {
 	isReferenceModel,
 } from 'kodgen';
 import pathLib from 'path';
+import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
 import { selectModels } from '../../utils';
 import { JSDocService } from '../jsdoc/jsdoc.service';

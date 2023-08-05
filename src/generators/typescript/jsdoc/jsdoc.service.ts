@@ -66,7 +66,7 @@ export class JSDocService {
 	}
 
 	private setReturns(records: JSDocRecords, returns: IJSDocConfigReturns): void {
-		if (returns?.type || returns?.description) {
+		if (!!returns?.type || !!returns?.description) {
 			const type = returns.type ? `{${returns.type}}` : '';
 			const description = returns.description ? returns.description : '';
 
