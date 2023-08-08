@@ -2,29 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { toQueryParams } from '<%- relativeTo('./internals') %>';
-<%_ for (const importEntry of getImportEntries()) { -%>
+import { toQueryParams } from '<%- k.relativeTo('./internals') %>';
+<%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <% } %>
-<%_ const jsdocServiceResult = jsdoc.build({ description }) -%>
+<%_ const jsdocServiceResult = k.jsdoc.build({ description: k.description }) -%>
 <%_ if (jsdocServiceResult) { -%>
 <%- jsdocServiceResult %>
 <%_ } -%>
 @Injectable({ providedIn: 'root' })
-export class <%- name %>Service {
-	private readonly baseUrl = '<%- baseUrl %>';
+export class <%- k.name %>Service {
+	private readonly baseUrl = '<%- k.baseUrl %>';
 
 	constructor(private readonly http: HttpClient) {}
-	<%_ for (const path of paths) { -%>
+	<%_ for (const path of k.paths) { -%>
 
 	<%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
-	<%_ const jsdocResult = jsdoc.build(toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
+	<%_ const jsdocResult = k.jsdoc.build(k.toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
 	<%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 	<%_ } -%>
 	<%_ if (multipart) { -%>
 	<%- path.name %>(
-		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
 		<%_ } else { -%>
 		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
@@ -40,7 +40,7 @@ export class <%- name %>Service {
 		observe?: 'body',
 	): Observable<<%- path.response.typeName %>>;
 	<%- path.name %>(
-		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
 		<%_ } else { -%>
 		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
@@ -57,7 +57,7 @@ export class <%- name %>Service {
 		reportProgress?: boolean,
 	): Observable<HttpEvent<<%- path.response.typeName %>>>;
 	<%- path.name %>(
-		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
 		<%_ } else { -%>
 		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
@@ -75,7 +75,7 @@ export class <%- name %>Service {
 	): Observable<<%- path.response.typeName %> | HttpEvent<<%- path.response.typeName %>>> {
 	<%_ } else { -%>
 	<%- path.name %>(
-		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
 		<%_ } else { -%>
 		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
@@ -107,7 +107,7 @@ export class <%- name %>Service {
 		<%_ } -%>
 		return this.http.request<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>(
 			'<%- path.method %>',
-			`${this.baseUrl}<%- parametrizeUrlPattern(path.urlPattern, config.inlinePathParameters, 'pathParams') %>`,
+			`${this.baseUrl}<%- k.parametrizeUrlPattern(path.urlPattern, k.config.inlinePathParameters, 'pathParams') %>`,
 			{
 				<%_ if (path.request.body && !multipart) { -%>
 				body: <%- path.request.body.typeName === 'string' ? 'JSON.stringify(body)' : 'body' %>,

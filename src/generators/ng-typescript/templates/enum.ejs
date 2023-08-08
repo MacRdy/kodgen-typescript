@@ -1,41 +1,41 @@
-<%_ const jsdocResult = jsdoc.build({ deprecated: model.deprecated, description: model.description }) -%>
+<%_ const jsdocResult = k.jsdoc.build({ deprecated: k.model.deprecated, description: k.model.description }) -%>
 <%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 <%_ } -%>
-<%_ if (config.useNativeEnums) { -%>
-export enum <%= model.name %> {
-	<%_ for (const entry of model.entries) { -%>
-	<%_ const jsdocEntryResult = jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
+<%_ if (k.config.useNativeEnums) { -%>
+export enum <%- k.model.name %> {
+	<%_ for (const entry of k.model.entries) { -%>
+	<%_ const jsdocEntryResult = k.jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
 	<%_ if (jsdocEntryResult) { -%>
 <%- jsdocEntryResult %>
 	<%_ } -%>
-	<%_ if (model.isStringlyTyped) { -%>
-	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = '<%- entry.value %>',
+	<%_ if (k.model.isStringlyTyped) { -%>
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = '<%- entry.value %>',
 	<%_ } else { -%>
-	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- entry.value %>,
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- entry.value %>,
 	<%_ } -%>
 	<%_ } -%>
 }
 <%_ } else { -%>
-export type <%= model.name %> =
-	<%_ for (const entry of model.entries) { -%>
-	<%_ if (model.isStringlyTyped) { -%>
+export type <%- k.model.name %> =
+	<%_ for (const entry of k.model.entries) { -%>
+	<%_ if (k.model.isStringlyTyped) { -%>
 	<%- `| '${entry.value}'` %>
 	<%_ } else { -%>
 	<%- `| ${entry.value}` %>
 	<%_ } -%>
 	<%_ } -%>;
 
-export const <%= model.name %> = {
-	<%_ for (const entry of model.entries) { -%>
-	<%_ const jsdocEntryResult = jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
+export const <%- k.model.name %> = {
+	<%_ for (const entry of k.model.entries) { -%>
+	<%_ const jsdocEntryResult = k.jsdoc.build({ deprecated: entry.deprecated, description: entry.description }, 1) -%>
 	<%_ if (jsdocEntryResult) { -%>
 	<%- jsdocEntryResult %>
 	<%_ } -%>
-	<%_ if (model.isStringlyTyped) { -%>
-	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %>: '<%- entry.value %>' as <%= model.name %>,
+	<%_ if (k.model.isStringlyTyped) { -%>
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %>: '<%- entry.value %>' as <%- k.model.name %>,
 	<%_ } else { -%>
-	<%- !isValidName(entry.name) ? `'${entry.name}'` : entry.name %>: <%- entry.value %> as <%= model.name %>,
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %>: <%- entry.value %> as <%- k.model.name %>,
 	<%_ } -%>
 	<%_ } -%>
 } as const;

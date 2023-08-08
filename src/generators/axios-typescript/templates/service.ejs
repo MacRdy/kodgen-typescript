@@ -1,23 +1,23 @@
 import { AxiosProgressEvent } from 'axios';
 
-import { apiRequest, toQueryParams } from '<%- relativeTo('./internals') %>';
-<%_ for (const importEntry of getImportEntries()) { -%>
+import { apiRequest, toQueryParams } from '<%- k.relativeTo('./internals') %>';
+<%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <% } %>
-<%_ const jsdocServiceResult = jsdoc.build({ description }) -%>
+<%_ const jsdocServiceResult = k.jsdoc.build({ description: k.description }) -%>
 <%_ if (jsdocServiceResult) { -%>
 <%- jsdocServiceResult %>
 <%_ } -%>
-export class <%- name %>Api {
-	<%_ for (const path of paths) { -%>
+export class <%- k.name %>Api {
+	<%_ for (const path of k.paths) { -%>
 
 	<%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
-	<%_ const jsdocResult = jsdoc.build(toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
+	<%_ const jsdocResult = k.jsdoc.build(k.toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
 	<%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 	<%_ } -%>
 	static <%- path.name %>(
-		<%_ if (!config.inlinePathParameters && path.request.pathParametersType) { -%>
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
 		<%_ } else { -%>
 		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
@@ -49,7 +49,7 @@ export class <%- name %>Api {
 		<%_ } -%>
 		return apiRequest<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>({
 			method: '<%- path.method %>',
-			url: `<%- parametrizeUrlPattern(path.urlPattern, config.inlinePathParameters, 'pathParams') %>`,
+			url: `<%- k.parametrizeUrlPattern(path.urlPattern, k.config.inlinePathParameters, 'pathParams') %>`,
 			<%_ if (path.request.queryParametersMapping) { -%>
 			params,
 			<%_ } -%>

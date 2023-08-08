@@ -1,7 +1,7 @@
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 const client = axios.create({
-    baseURL: '<%- baseUrl %>',
+    baseURL: '<%- k.baseUrl %>',
 });
 
 export const apiRequest = <T>(config: {
