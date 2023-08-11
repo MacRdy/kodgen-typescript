@@ -7,7 +7,9 @@ import { TypescriptGeneratorNamingService } from './typescript-generator-naming.
 import { TypescriptGeneratorStorageService } from './typescript-generator-storage.service';
 import { ITsGenConfig, ITsGenParameters } from './typescript-generator.model';
 
-export abstract class TypescriptGeneratorService implements IGenerator<ITsGenConfig> {
+export abstract class TypescriptGeneratorService<T extends ITsGenConfig = ITsGenConfig>
+	implements IGenerator<T>
+{
 	private readonly storage = new TypescriptGeneratorStorageService();
 	private readonly importRegistry = new ImportRegistryService();
 	private readonly namingService = new TypescriptGeneratorNamingService();
@@ -40,9 +42,9 @@ export abstract class TypescriptGeneratorService implements IGenerator<ITsGenCon
 
 	abstract getTemplateDir(): string;
 
-	abstract prepareConfig(userConfig?: ITsGenConfig): ITsGenConfig;
+	abstract prepareConfig(userConfig?: T): T;
 
-	generate(document: IDocument, config?: ITsGenConfig): IGeneratorFile[] {
+	generate(document: IDocument, config?: T): IGeneratorFile[] {
 		if (!config) {
 			throw new Error('Generator config not defined');
 		}
