@@ -11,13 +11,7 @@ export const apiRequest = <T>(config: {
 
 	const fetchUrl = params ? `${url}?${params}` : url;
 
-	const fetchConfig: RequestInit = { method };
-
-	if (data) {
-		fetchConfig.body = JSON.stringify(data);
-	}
-
-	return fetch(`${baseUrl}${fetchUrl}`, fetchConfig)
+	return fetch(`${baseUrl}${fetchUrl}`, { method, data })
 		.then(res => {
 			if (!res.ok) {
 				throw new Error(`HTTP Error (${res.status}: ${res.statusText})`);

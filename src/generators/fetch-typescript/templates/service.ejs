@@ -49,7 +49,7 @@ export class <%- k.name %>Api {
 			params,
 			<%_ } -%>
 			<%_ if (path.request.body && !multipart) { -%>
-			data: body,
+			data: <%- ['number', 'boolean'].includes(path.request.body.typeName) ? 'body' : 'JSON.stringify(body)' %>,
 			<%_ } -%>
 			<%_ if (path.request.body && multipart) { -%>
 			data: formData,
