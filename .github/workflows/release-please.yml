@@ -1,0 +1,48 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PACKAGE_NAME: 'kodgen-typescript'
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+        pull-requests: write
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          bump-minor-pre-major: true
+          pull-request-title-pattern: 'chore: release ${version}'
+          package-name: ${{ env.PACKAGE_NAME }}
+      - uses: actions/checkout@v2
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+          registry-url: 'https://registry.npmjs.org'
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Pack
+        run: npm pack
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Publish
+        run:
+          npm publish ${{ env.PACKAGE_NAME }}-${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}.tgz
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Upload Release Artifact
+        run:
+          gh release upload ${{ steps.release.outputs.tag_name }} ./${{ env.PACKAGE_NAME }}-${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}.tgz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ steps.release.outputs.release_created }}

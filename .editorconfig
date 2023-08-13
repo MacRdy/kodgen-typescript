@@ -9,6 +9,11 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 end_of_line = lf
 
+[*.yml]
+indent_style = space
+tab_width = 2
+quote_type = single
+
 [*.ts]
 quote_type = single
 
