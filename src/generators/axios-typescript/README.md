@@ -2,7 +2,7 @@
 
 Axios-based generator
 
-## Configuration
+## Generator configuration
 
 | Property                | Default | Description                                                 |
 |-------------------------|---------|-------------------------------------------------------------|

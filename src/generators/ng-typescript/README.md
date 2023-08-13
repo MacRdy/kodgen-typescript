@@ -2,7 +2,7 @@
 
 Angular-TypeScript generator
 
-## Configuration
+## Generator configuration
 
 | Property                | Default | Description                                                 |
 |-------------------------|---------|-------------------------------------------------------------|

@@ -2,7 +2,7 @@
 
 Native Fetch API generator
 
-## Configuration
+## Generator configuration
 
 | Property                | Default | Description                                                 |
 |-------------------------|---------|-------------------------------------------------------------|

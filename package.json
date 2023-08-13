@@ -13,7 +13,6 @@
 		"format:write": "prettier -w --list-different \"**/*{.ts,.js,.json}\"",
 		"prepack": "npm run build",
 		"commitlint": "commitlint",
-		"release": "semantic-release",
 		"prepare": "husky install"
 	},
 	"repository": {
