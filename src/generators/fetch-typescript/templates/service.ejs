@@ -2,68 +2,6 @@ import { apiRequest, toQueryParams } from '<%- k.relativeTo('./internals') %>';
 <%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <%_ } -%>
-<%_ if (k.config.useClasses) { -%>
-
-<%_ const jsdocServiceResult = k.jsdoc.build({ description: k.description }) -%>
-<%_ if (jsdocServiceResult) { -%>
-<%- jsdocServiceResult %>
-<%_ } -%>
-export class <%- k.name %>Api {
-	<%_ for (const path of k.paths) { -%>
-
-	<%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
-	<%_ const jsdocResult = k.jsdoc.build(k.toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
-	<%_ if (jsdocResult) { -%>
-<%- jsdocResult %>
-	<%_ } -%>
-	static <%- path.name %>(
-		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
-		pathParams: <%- path.request.pathParametersType.name %>,
-		<%_ } else { -%>
-		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
-		<%- p.name %>: <%- p.type %>,
-		<%_ } -%>
-		<%_ } -%>
-		<%_ if (path.request.queryParametersType) { -%>
-		queryParams: <%- path.request.queryParametersType.name %>,
-		<%_ } -%>
-		<%_ if (path.request.body) { -%>
-		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
-		<%_ } -%>
-	): Promise<<%- path.response.typeName %>> {
-		<%_ if (path.request.queryParametersMapping) { -%>
-		const params = toQueryParams({
-			<%_ for (const m of path.request.queryParametersMapping) { -%>
-			'<%- m.originalName %>': queryParams.<%- m.objectPath.join('?.') %>,
-			<%_ } -%>
-		});
-
-		<%_ } -%>
-		<%_ if (multipart) { -%>
-		const formData = new FormData();
-		Object.entries(body ?? {}).forEach(([key, value]) => formData.append(key, value));
-
-		<%_ } -%>
-		return apiRequest<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>({
-			method: '<%- path.method %>',
-			url: `<%- k.parametrizeUrlPattern(path.urlPattern, k.config.inlinePathParameters, 'pathParams') %>`,
-			<%_ if (path.request.queryParametersMapping) { -%>
-			params,
-			<%_ } -%>
-			<%_ if (path.request.body && !multipart) { -%>
-			data: <%- ['number', 'boolean'].includes(path.request.body.typeName) ? 'body' : 'JSON.stringify(body)' %>,
-			<%_ } -%>
-			<%_ if (path.request.body && multipart) { -%>
-			data: formData,
-			<%_ } -%>
-			<%_ if (path.response.typeName === 'string') { -%>
-			responseType: 'text',
-			<%_ } -%>
-		});
-	}
-	<%_ } -%>
-}
-<%_ } else { -%>
 <%_ for (const path of k.paths) { -%>
 
 <%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
@@ -116,5 +54,4 @@ export const <%- `${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}${path.name
 		<%_ } -%>
 	});
 }
-<%_ } -%>
 <%_ } -%>

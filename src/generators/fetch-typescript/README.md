@@ -10,7 +10,6 @@ Native Fetch API generator
 | `inlinePathParameters`  | `true`  | Inline or single path parameters mode                       |
 | `readonly`              | `true`  | Use readonly properties                                     |
 | `useNativeEnums`        | `false` | Use native enum entities instead of type-const variant      |
-| `useClasses`            | `false` | Static classes instead of function-based generation         |
 
 [JSON Schema](assets/fetch-typescript-config-schema.json)
 

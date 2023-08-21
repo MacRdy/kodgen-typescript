@@ -2,12 +2,11 @@ import Ajv from 'ajv';
 import { generateAjvErrorMessage, IDocument, IGeneratorFile } from 'kodgen';
 import pathLib from 'path';
 import configSchema from '../../../assets/fetch-typescript-config-schema.json';
-import { baseUrlSelector } from '../typescript/typescript-generator.model';
+import { baseUrlSelector, ITsGenConfig } from '../typescript/typescript-generator.model';
 import { TypescriptGeneratorService } from '../typescript/typescript-generator.service';
 import { toPascalCase } from '../utils';
-import { IFetchTsGenConfig } from './fetch-typescript-generator.model';
 
-export class FetchTypescriptGeneratorService extends TypescriptGeneratorService<IFetchTsGenConfig> {
+export class FetchTypescriptGeneratorService extends TypescriptGeneratorService<ITsGenConfig> {
 	getName(): string {
 		return 'fetch-typescript';
 	}
@@ -30,7 +29,7 @@ export class FetchTypescriptGeneratorService extends TypescriptGeneratorService<
 		});
 	}
 
-	override generate(doc: IDocument, config?: IFetchTsGenConfig): IGeneratorFile[] {
+	override generate(doc: IDocument, config?: ITsGenConfig): IGeneratorFile[] {
 		const files = super.generate(doc, config);
 
 		files.push({
@@ -44,13 +43,12 @@ export class FetchTypescriptGeneratorService extends TypescriptGeneratorService<
 		return files;
 	}
 
-	prepareConfig(userConfig?: IFetchTsGenConfig): IFetchTsGenConfig {
-		const config: IFetchTsGenConfig = {
+	prepareConfig(userConfig?: ITsGenConfig): ITsGenConfig {
+		const config: ITsGenConfig = {
 			index: userConfig?.index ?? true,
 			inlinePathParameters: userConfig?.inlinePathParameters ?? true,
 			readonly: userConfig?.readonly ?? true,
 			useNativeEnums: userConfig?.useNativeEnums,
-			useClasses: userConfig?.useClasses,
 		};
 
 		this.validate(config);
@@ -58,8 +56,8 @@ export class FetchTypescriptGeneratorService extends TypescriptGeneratorService<
 		return config;
 	}
 
-	private validate(config: IFetchTsGenConfig): void {
-		const validate = new Ajv({ allErrors: true }).compile<IFetchTsGenConfig>(configSchema);
+	private validate(config: ITsGenConfig): void {
+		const validate = new Ajv({ allErrors: true }).compile<ITsGenConfig>(configSchema);
 
 		if (!validate(config)) {
 			throw new Error(

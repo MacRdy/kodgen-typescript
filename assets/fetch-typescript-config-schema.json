@@ -21,11 +21,6 @@
 			"type": "boolean",
 			"default": false,
 			"description": "Generate native enum entities instead of type-const variant"
-		},
-		"useClasses": {
-			"type": "boolean",
-			"default": false,
-			"description": "Static classes instead of function-based generation"
 		}
 	}
 }
