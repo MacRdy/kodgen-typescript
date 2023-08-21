@@ -4,6 +4,7 @@ import {
 	Hooks,
 	IReferenceModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
+	Path,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
 } from 'kodgen';
@@ -68,24 +69,12 @@ export class TypescriptGeneratorNamingService {
 		return generatedName;
 	}
 
-	generateUniqueOperationName(
-		key: string,
-		method: string,
-		urlPattern: string,
-		operationId?: string,
-		modifier?: number,
-	): string {
+	generateUniqueOperationName(key: string, path: Path, modifier?: number): string {
 		const scope = this.getMethodNamingScope(key);
-		const generatedName = this.generateOperationName(method, urlPattern, operationId, modifier);
+		const generatedName = this.generateOperationName(path, modifier);
 
 		if (this.isReserved(scope, generatedName)) {
-			return this.generateUniqueOperationName(
-				key,
-				method,
-				urlPattern,
-				operationId,
-				(modifier ?? 0) + 1,
-			);
+			return this.generateUniqueOperationName(key, path, (modifier ?? 0) + 1);
 		}
 
 		this.reserve(scope, generatedName);
@@ -142,21 +131,23 @@ export class TypescriptGeneratorNamingService {
 		return fn(name, modifier);
 	}
 
-	private generateOperationName(
-		method: string,
-		urlPattern: string,
-		operationId?: string,
-		modifier?: number,
-	): string {
+	private generateOperationName(path: Path, modifier?: number): string {
 		const fn = Hooks.getOrDefault<TsGenGenerateOperationName>(
 			'generateOperationName',
-			(_method, _urlPattern, _operationId, _modifier) =>
-				_operationId
-					? toCamelCase(`${_operationId} ${_modifier ?? ''}`)
-					: toCamelCase(`${_method} ${urlPattern} ${_modifier ?? ''}`),
+			(_path, _modifier) => {
+				const operationName = _path.extensions['x-operation-name'];
+
+				if (operationName && typeof operationName === 'string') {
+					return `${operationName} ${_modifier ?? ''}`;
+				}
+
+				return _path.operationId
+					? toCamelCase(`${_path.operationId} ${_modifier ?? ''}`)
+					: toCamelCase(`${_path.method} ${_path.urlPattern} ${_modifier ?? ''}`);
+			},
 		);
 
-		return fn(method, urlPattern, operationId, modifier);
+		return fn(path, modifier);
 	}
 
 	private reserve(scope: string, name: string): void {

@@ -4,6 +4,7 @@ import {
 	Hooks,
 	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
+	Path,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
 	RESPONSE_OBJECT_ORIGIN,
 } from 'kodgen';
@@ -53,21 +54,26 @@ describe('typescript-generator-naming-service', () => {
 		expect(service.generateUniqueServiceName('Test')).toStrictEqual('Test ');
 		expect(service.generateUniqueServiceName('Test')).toStrictEqual('Test 1');
 
-		expect(service.generateUniqueOperationName('Service1', 'get', 'test')).toStrictEqual(
-			'get test ',
+		const path1 = new Path('test', 'GET');
+
+		expect(service.generateUniqueOperationName('Service1', path1)).toStrictEqual('GET test ');
+
+		expect(service.generateUniqueOperationName('Service1', path1)).toStrictEqual('GET test 1');
+
+		expect(service.generateUniqueOperationName('Service2', path1)).toStrictEqual('GET test ');
+
+		const path2 = new Path('test', 'GET', { operationId: 'operationId' });
+
+		expect(service.generateUniqueOperationName('Service2', path2)).toStrictEqual(
+			'operationId ',
 		);
 
-		expect(service.generateUniqueOperationName('Service1', 'get', 'test')).toStrictEqual(
-			'get test 1',
-		);
+		const path3 = new Path('test', 'GET', {
+			operationId: 'operationId',
+			extensions: { 'x-operation-name': 'greet' },
+		});
 
-		expect(service.generateUniqueOperationName('Service2', 'get', 'test')).toStrictEqual(
-			'get test ',
-		);
-
-		expect(
-			service.generateUniqueOperationName('Service2', 'get', 'test', 'operationId'),
-		).toStrictEqual('operationId ');
+		expect(service.generateUniqueOperationName('Service2', path3)).toStrictEqual('greet ');
 
 		expect(service.generateServiceName('Test')).toStrictEqual('Test ');
 	});

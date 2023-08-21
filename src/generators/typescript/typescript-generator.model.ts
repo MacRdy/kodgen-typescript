@@ -1,4 +1,4 @@
-import { Extensions, IDocument, PathMethod } from 'kodgen';
+import { Extensions, IDocument, Path, PathMethod } from 'kodgen';
 
 export interface ITsGenConfig {
 	index?: boolean;
@@ -145,16 +145,11 @@ export type TsGenGenerateServiceName = (name: string, modifier?: number) => stri
 /**
  * @function
  * @description Generate unique method name
- * @param {string} name - A set of keywords identifying the path (method, url pattern)
+ * @param {Path} path - Current path data
  * @param {number} [modifier] - Modifier. Adds uniqueness to duplicate method names
  * @returns {string} - New method name
  */
-export type TsGenGenerateOperationName = (
-	method: string,
-	urlPattern: string,
-	operationId?: string,
-	modifier?: number,
-) => string;
+export type TsGenGenerateOperationName = (path: Path, modifier?: number) => string;
 
 /**
  * @function
