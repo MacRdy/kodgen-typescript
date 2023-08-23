@@ -1,6 +1,6 @@
 import { AxiosProgressEvent } from 'axios';
 
-import { apiRequest, toQueryParams } from '<%- k.relativeTo('./internals') %>';
+import { apiRequest, camelCaseMerge, toQueryParams } from '<%- k.relativeTo('./internals') %>';
 <%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <%_ } -%>
@@ -11,7 +11,7 @@ import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 <%_ } -%>
-export const <%- `${k.name.charAt(0).toLowerCase()}${k.name.slice(1)}${path.name.charAt(0).toUpperCase()}${path.name.slice(1)}` %> = (
+export const <%- `${camelCaseMerge(k.name, path.name)}` %> = (
 	<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 	pathParams: <%- path.request.pathParametersType.name %>,
 	<%_ } else { -%>
