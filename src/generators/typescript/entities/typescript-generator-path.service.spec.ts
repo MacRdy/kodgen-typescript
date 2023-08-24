@@ -70,6 +70,56 @@ describe('typescript-generator-path-service', () => {
 		hooksGetOrDefaultSpy.mockRestore();
 	});
 
+	it('should generate three services', () => {
+		const pathDef1 = new Path('', 'GET', { tags: ['tag'] });
+
+		const pathDef2 = new Path('', 'GET', {
+			tags: ['tag'],
+			extensions: { 'x-controller-name': 'controllerName' },
+		});
+
+		const pathDef3 = new Path('', 'GET');
+
+		const storage = new TypescriptGeneratorStorageService();
+		const namingService = new TypescriptGeneratorNamingService();
+		const registry = new ImportRegistryService();
+
+		const modelService = new TypescriptGeneratorModelService(
+			storage,
+			registry,
+			namingService,
+			testingTypescriptGeneratorConfig,
+		);
+
+		const service = new TypescriptGeneratorPathService(
+			modelService,
+			storage,
+			registry,
+			namingService,
+			testingTypescriptGeneratorConfig,
+		);
+
+		const namingServiceMock = jest.mocked(namingService);
+		namingServiceMock.generateUniqueServiceName.mockImplementation(x => x);
+		namingServiceMock.generateServiceName.mockImplementation(x => x);
+
+		const doc: IDocument = {
+			info: {},
+			models: [],
+			paths: [pathDef1, pathDef2, pathDef3],
+			servers: [],
+			tags: [],
+		};
+
+		const result = service.generate(doc, { inlinePathParameters: true });
+
+		expect(result.length).toStrictEqual(3);
+
+		expect(result[0]?.templateData!.name).toStrictEqual('tag');
+		expect(result[1]?.templateData!.name).toStrictEqual('controllerName');
+		expect(result[2]?.templateData!.name).toStrictEqual('common');
+	});
+
 	it('should generate file (simple)', () => {
 		toKebabCaseMock.mockReturnValueOnce('my-api');
 
