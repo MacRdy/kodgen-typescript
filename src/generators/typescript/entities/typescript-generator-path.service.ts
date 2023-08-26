@@ -169,6 +169,11 @@ export class TypescriptGeneratorPathService {
 						responseTypeName,
 					),
 				getImportEntries: () => this.getImportEntries(paths, filePath, config),
+				camelCaseMerge: (s1: string, s2: string): string =>
+					s1.charAt(0).toLowerCase() +
+					s1.slice(1) +
+					s2.charAt(0).toUpperCase() +
+					s2.slice(1),
 				parametrizeUrlPattern: (
 					urlPattern: string,
 					inline = true,

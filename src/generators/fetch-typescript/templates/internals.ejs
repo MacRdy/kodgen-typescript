@@ -47,6 +47,3 @@ export const toQueryParams = (params: Record<string, unknown>, prefix?: string):
 
 	return queryParams.join('&');
 };
-
-const camelCaseMerge = (s1: string, s2: string): string =>
-	`${s1.charAt(0).toLowerCase()}${s1.slice(1)}${s2.charAt(0).toUpperCase()}${s2.slice(1)}`;

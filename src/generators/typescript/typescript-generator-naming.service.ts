@@ -138,7 +138,7 @@ export class TypescriptGeneratorNamingService {
 				const operationName = _path.extensions['x-operation-name'];
 
 				if (operationName && typeof operationName === 'string') {
-					return `${operationName} ${_modifier ?? ''}`;
+					return toCamelCase(`${operationName} ${_modifier ?? ''}`);
 				}
 
 				return _path.operationId
