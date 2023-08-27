@@ -227,6 +227,7 @@ export class TypescriptGeneratorPathService {
 			params.push({
 				name: bodyVarName,
 				type: path.request.body.typeName,
+				optional: !path.request.body.required,
 				description: path.request.body.description,
 			});
 		}
