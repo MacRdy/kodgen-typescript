@@ -369,7 +369,9 @@ export class TypescriptGeneratorModelService {
 
 			if (prop.def instanceof ObjectModel) {
 				mapping.push(...this.remapProperties(prop.def, originalNamePath, objectPath));
-			} else {
+			}
+
+			if (!(prop.def instanceof ObjectModel) || prop.def.additionalProperties) {
 				mapping.push({
 					originalName: originalNamePath.join('.'),
 					objectPath,

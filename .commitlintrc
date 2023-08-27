@@ -10,7 +10,7 @@
 				"axios",
 				"fetch",
 				"ng",
-				"base"
+				"all"
 			]
 		]
 	}
