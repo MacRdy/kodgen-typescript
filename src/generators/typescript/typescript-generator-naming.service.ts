@@ -2,7 +2,7 @@ import {
 	BODY_OBJECT_ORIGIN,
 	FORM_DATA_OBJECT_ORIGIN,
 	Hooks,
-	IReferenceModel,
+	NamedModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
 	Path,
 	QUERY_PARAMETERS_OBJECT_ORIGIN,
@@ -30,7 +30,7 @@ export class TypescriptGeneratorNamingService {
 	private readonly getPropertyNamingScope = (mainEntity: string): string =>
 		`${mainEntity}_PROPERTY_NAMING_SCOPE`;
 
-	generateUniqueEnumName(entity: IReferenceModel, modifier?: number): string {
+	generateUniqueEnumName(entity: NamedModel, modifier?: number): string {
 		const scope = this.referenceEntityNamingScope;
 		const name = this.generateEnumName(...this.getRawName(entity, modifier));
 
@@ -43,7 +43,7 @@ export class TypescriptGeneratorNamingService {
 		return name;
 	}
 
-	generateUniqueModelName(entity: IReferenceModel, modifier?: number): string {
+	generateUniqueModelName(entity: NamedModel, modifier?: number): string {
 		const scope = this.referenceEntityNamingScope;
 		const name = this.generateModelName(...this.getRawName(entity, modifier));
 
@@ -163,7 +163,7 @@ export class TypescriptGeneratorNamingService {
 	}
 
 	private getRawName(
-		entity: IReferenceModel,
+		entity: NamedModel,
 		modifier?: number,
 	): [string, number | undefined, string | undefined] {
 		if (!entity.originalName) {

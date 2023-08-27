@@ -9,6 +9,7 @@ import {
 	IDocument,
 	IGeneratorFile,
 	Model,
+	NamedModel,
 	NullModel,
 	ObjectModel,
 	PATH_PARAMETERS_OBJECT_ORIGIN,
@@ -18,7 +19,6 @@ import {
 	RESPONSE_OBJECT_ORIGIN,
 	SimpleModel,
 	UnknownModel,
-	isReferenceModel,
 } from 'kodgen';
 import pathLib from 'path';
 import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
@@ -173,7 +173,7 @@ export class TypescriptGeneratorModelService {
 
 		if (def instanceof ExtendedModel) {
 			return def.def.flatMap(x => this.resolveDependencies(x));
-		} else if (!isReferenceModel(def)) {
+		} else if (!(def instanceof NamedModel)) {
 			return [];
 		}
 
