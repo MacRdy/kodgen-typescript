@@ -1,13 +1,4 @@
-import {
-	EnumModel,
-	IDocument,
-	IGeneratorFile,
-	ObjectModel,
-	Path,
-	PathRequestBody,
-	PathResponse,
-	Printer,
-} from 'kodgen';
+import { IDocument, IGeneratorFile, Path, PathRequestBody, PathResponse, Printer } from 'kodgen';
 import pathLib from 'path';
 import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
@@ -158,7 +149,6 @@ export class TypescriptGeneratorPathService {
 					pathParametersVarName: string,
 					queryParametersVarName: string,
 					bodyVarName: string,
-					responseTypeName?: string,
 				): IJSDocConfig =>
 					this.toJSDocConfig(
 						config,
@@ -166,7 +156,6 @@ export class TypescriptGeneratorPathService {
 						pathParametersVarName,
 						queryParametersVarName,
 						bodyVarName,
-						responseTypeName,
 					),
 				getImportEntries: () => this.getImportEntries(paths, filePath, config),
 				camelCaseMerge: (s1: string, s2: string): string =>
@@ -194,7 +183,6 @@ export class TypescriptGeneratorPathService {
 		pathParametersVarName: string,
 		queryParametersVarName: string,
 		bodyVarName: string,
-		responseTypeName?: string,
 	): IJSDocConfig {
 		const params: IJSDocConfigParam[] = [];
 
@@ -237,10 +225,7 @@ export class TypescriptGeneratorPathService {
 			deprecated: path.deprecated,
 			summary: path.summaries,
 			description: path.descriptions,
-			returns: {
-				type: responseTypeName,
-				description: path.response.description,
-			},
+			returns: { description: path.response.description },
 		};
 	}
 
@@ -278,25 +263,10 @@ export class TypescriptGeneratorPathService {
 	}
 
 	private getPathRequestBody(path: Path): PathRequestBody | undefined {
-		let body: PathRequestBody | undefined;
-
-		if (path.requestBodies && path.requestBodies.length > 1) {
-			body = path.requestBodies.find(x => new RegExp(this.jsonMediaRe).test(x.media));
-
-			if (body) {
-				Printer.verbose(`Multiple request bodies found. Take '${body.media}'`);
-			}
-		}
-
-		if (!body) {
-			body = path.requestBodies?.[0];
-
-			if (body && path.requestBodies && path.requestBodies.length > 1) {
-				Printer.verbose(`Multiple request bodies found. Take first (${body.media})`);
-			}
-		}
-
-		return body;
+		return (
+			path.requestBodies?.find(x => new RegExp(this.jsonMediaRe).test(x.media)) ??
+			path.requestBodies?.[0]
+		);
 	}
 
 	private getResponse(path: Path): ITsGenPathResponse {
@@ -330,37 +300,19 @@ export class TypescriptGeneratorPathService {
 			dependencies,
 			typeName: this.modelService.resolveType(responseType),
 			media: response?.media,
-			description:
-				responseType instanceof EnumModel || responseType instanceof ObjectModel
-					? responseType.description
-					: undefined,
+			description: response?.description,
 		};
 	}
 
-	private getMostRelatedResponse(list: PathResponse[], media: RegExp): PathResponse | undefined {
-		let response: PathResponse | undefined;
-
-		if (list.length > 1) {
-			response = list.find(
-				x => new RegExp(media).test(x.code) && new RegExp(this.jsonMediaRe).test(x.media),
-			);
-
-			if (response) {
-				Printer.verbose(
-					`Multiple responses found. Take '${response.media}' (${response.code})`,
-				);
-			}
-		}
-
-		if (!response) {
-			response = list.find(x => new RegExp(media).test(x.code));
-
-			if (response && list.length > 1) {
-				Printer.verbose(`Multiple responses found. Take first (${response.media})`);
-			}
-		}
-
-		return response;
+	private getMostRelatedResponse(list: PathResponse[], codeRe: RegExp): PathResponse | undefined {
+		return (
+			list.find(
+				x =>
+					new RegExp(codeRe).test(x.code) &&
+					x.media &&
+					new RegExp(this.jsonMediaRe).test(x.media),
+			) ?? list.find(x => new RegExp(codeRe).test(x.code))
+		);
 	}
 
 	private getImportEntries(

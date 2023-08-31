@@ -19,6 +19,7 @@ import {
 	RESPONSE_OBJECT_ORIGIN,
 	SimpleModel,
 	UnknownModel,
+	VoidModel,
 } from 'kodgen';
 import pathLib from 'path';
 import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
@@ -196,6 +197,8 @@ export class TypescriptGeneratorModelService {
 			type = prop.def.length > 1 ? `(${type})` : type;
 		} else if (prop instanceof NullModel) {
 			type = 'null';
+		} else if (prop instanceof VoidModel) {
+			type = 'void';
 		} else if (prop instanceof ConstantModel) {
 			type = typeof prop.value === 'string' ? `'${prop.value}'` : `${prop.value}`;
 		} else if (prop instanceof SimpleModel) {
@@ -290,6 +293,7 @@ export class TypescriptGeneratorModelService {
 			const generatedModel: ITsGenModel = {
 				name,
 				properties: this.getProperties(def.properties),
+				description: def.description,
 				deprecated: def.deprecated,
 				additionPropertiesTypeName: additionalPropertiesType,
 				dependencies,

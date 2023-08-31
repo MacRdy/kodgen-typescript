@@ -9,8 +9,7 @@
 			[
 				"axios",
 				"fetch",
-				"ng",
-				"all"
+				"ng"
 			]
 		]
 	}
