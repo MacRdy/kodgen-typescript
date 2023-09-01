@@ -220,12 +220,17 @@ export class TypescriptGeneratorPathService {
 			});
 		}
 
+		const descriptions = [...(path.descriptions ?? [])];
+
+		if (path.response.description) {
+			descriptions.push(path.response.description);
+		}
+
 		return {
 			params,
 			deprecated: path.deprecated,
 			summary: path.summaries,
-			description: path.descriptions,
-			returns: { description: path.response.description },
+			description: descriptions,
 		};
 	}
 
