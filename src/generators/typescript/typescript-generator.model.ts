@@ -79,6 +79,7 @@ export interface ITsGenPathRequest {
 
 export interface ITsGenPathResponse {
 	typeName: string;
+	typeDescription?: string;
 	media?: string;
 	dependencies: string[];
 	description?: string;

@@ -1,4 +1,12 @@
-import { IDocument, IGeneratorFile, Path, PathRequestBody, PathResponse, Printer } from 'kodgen';
+import {
+	IDocument,
+	IGeneratorFile,
+	Path,
+	PathRequestBody,
+	PathResponse,
+	Printer,
+	hasDescription,
+} from 'kodgen';
 import pathLib from 'path';
 import { IImportRegistryEntry } from '../../../import-registry/import-registry.model';
 import { ImportRegistryService } from '../../../import-registry/import-registry.service';
@@ -231,6 +239,7 @@ export class TypescriptGeneratorPathService {
 			deprecated: path.deprecated,
 			summary: path.summaries,
 			description: descriptions,
+			returns: { description: path.response.typeDescription },
 		};
 	}
 
@@ -304,6 +313,7 @@ export class TypescriptGeneratorPathService {
 		return {
 			dependencies,
 			typeName: this.modelService.resolveType(responseType),
+			typeDescription: hasDescription(responseType) ? responseType.description : undefined,
 			media: response?.media,
 			description: response?.description,
 		};
