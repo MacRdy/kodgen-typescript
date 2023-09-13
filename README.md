@@ -3,6 +3,8 @@
 [![npm](https://img.shields.io/npm/v/kodgen-typescript)](https://www.npmjs.com/package/kodgen-typescript)
 [![license](https://img.shields.io/github/license/MacRdy/kodgen-typescript)](LICENSE)
 
+> Under development until 1.0.0. Be cautious of potential breaking changes, even in minor updates.
+
 Collection of TypeScript generators for [kodgen](https://github.com/MacRdy/kodgen). JSDoc included.
 
 ## Installation
