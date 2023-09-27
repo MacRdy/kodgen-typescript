@@ -389,7 +389,7 @@ describe('typescript-generator-path-service', () => {
 		const requestBody = new PathRequestBody('application/json', requestBodyDef);
 
 		const responseDef = new SimpleModel('boolean');
-		const response = new PathResponse('200', 'application/json', responseDef);
+		const response = new PathResponse('200', responseDef, { media: 'application/json' });
 
 		const pathDef = new Path('/api', 'POST', {
 			requestBodies: [requestBody],
@@ -466,6 +466,7 @@ describe('typescript-generator-path-service', () => {
 			response: {
 				dependencies: [],
 				typeName: 'boolean',
+				typeDescription: undefined,
 				media: 'application/json',
 				description: undefined,
 			},

@@ -114,6 +114,7 @@ describe('typescript-generator-model-service', () => {
 
 		const expectedModel: ITsGenModel = {
 			name: 'ModelName',
+			description: undefined,
 			dependencies: [],
 			additionPropertiesTypeName: 'number',
 			properties: [
@@ -195,6 +196,7 @@ describe('typescript-generator-model-service', () => {
 
 		const expectedModel: ITsGenModel = {
 			name: 'ModelName',
+			description: undefined,
 			dependencies: ['AdditionalProperty'],
 			additionPropertiesTypeName: 'AdditionalProperty',
 			properties: [],
@@ -297,6 +299,7 @@ describe('typescript-generator-model-service', () => {
 		const expectedModels: ITsGenModel[] = [
 			{
 				name: 'QueryParametersModelName',
+				description: undefined,
 				dependencies: [],
 				additionPropertiesTypeName: undefined,
 				properties: [
@@ -323,6 +326,7 @@ describe('typescript-generator-model-service', () => {
 			},
 			{
 				name: 'QueryParametersModelNameFilter',
+				description: undefined,
 				dependencies: [],
 				additionPropertiesTypeName: undefined,
 				properties: [
@@ -340,6 +344,7 @@ describe('typescript-generator-model-service', () => {
 			},
 			{
 				name: 'QueryParametersModelNameFilterCurrent',
+				description: undefined,
 				dependencies: [],
 				additionPropertiesTypeName: undefined,
 				properties: [
@@ -366,6 +371,7 @@ describe('typescript-generator-model-service', () => {
 			},
 			{
 				name: 'QueryParametersModelNameFilterCurrentDate',
+				description: undefined,
 				dependencies: [],
 				additionPropertiesTypeName: undefined,
 				properties: [
