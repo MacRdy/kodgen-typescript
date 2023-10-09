@@ -17,7 +17,8 @@ export class <%- k.name %>Service {
 	constructor(private readonly http: HttpClient) {}
 	<%_ for (const path of k.paths) { -%>
 
-	<%_ const multipart = path.request.body?.media === 'multipart/form-data'; -%>
+	<%_ const responseType = path.response.typeName === 'string' ? 'text' : 'json' -%>
+	<%_ const multipart = path.request.body?.media === 'multipart/form-data' -%>
 	<%_ const jsdocResult = k.jsdoc.build(k.toJSDocConfig(path, 'pathParams', 'queryParams', 'body'), 1) -%>
 	<%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
@@ -37,7 +38,7 @@ export class <%- k.name %>Service {
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
 		observe?: 'body',
-		responseType?: 'json',
+		responseType?: '<%- responseType %>',
 	): Observable<<%- path.response.typeName %>>;
 	<%- path.name %>(
 		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
@@ -176,7 +177,10 @@ export class <%- k.name %>Service {
 		<%_ if (path.request.body) { -%>
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
-	): Observable<<%- path.response.typeName %> | Blob | ArrayBuffer | string | HttpEvent<<%- path.response.typeName %> | HttpEvent<Blob> | HttpEvent<ArrayBuffer> | HttpEvent<string>> {
+		observe: 'body' | 'events' = 'body',
+		responseType: 'json' | 'blob' | 'arraybuffer' | 'text' = '<%- responseType %>',
+		reportProgress = false,
+	): Observable<<%- path.response.typeName %> | Blob | ArrayBuffer | string | HttpEvent<<%- path.response.typeName %>> | HttpEvent<Blob> | HttpEvent<ArrayBuffer> | HttpEvent<string>> {
 		<%_ if (path.request.queryParametersMapping) { -%>
 		const params = new HttpParams({
 			fromString: toQueryParams({
@@ -201,15 +205,13 @@ export class <%- k.name %>Service {
 				<%_ } -%>
 				<%_ if (path.request.body && multipart) { -%>
 				body: formData,
-				observe: observe as any,
-				reportProgress,
 				<%_ } -%>
 				<%_ if (path.request.queryParametersMapping) { -%>
 				params,
 				<%_ } -%>
-				<%_ if (path.response.typeName === 'string') { -%>
-				responseType: 'text',
-				<%_ } -%>
+				observe: observe as any,
+				responseType: responseType as any,
+				reportProgress,
 			},
 		);
 	}
