@@ -22,7 +22,6 @@ export class <%- k.name %>Service {
 	<%_ if (jsdocResult) { -%>
 <%- jsdocResult %>
 	<%_ } -%>
-	<%_ if (multipart) { -%>
 	<%- path.name %>(
 		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
@@ -38,6 +37,7 @@ export class <%- k.name %>Service {
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
 		observe?: 'body',
+		responseType?: 'json',
 	): Observable<<%- path.response.typeName %>>;
 	<%- path.name %>(
 		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
@@ -53,7 +53,59 @@ export class <%- k.name %>Service {
 		<%_ if (path.request.body) { -%>
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
+		observe?: 'body',
+		responseType?: 'blob',
+	): Observable<Blob>;
+	<%- path.name %>(
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe?: 'body',
+		responseType?: 'arraybuffer',
+	): Observable<ArrayBuffer>;
+	<%- path.name %>(
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe?: 'body',
+		responseType?: 'text',
+	): Observable<string>;
+	<%- path.name %>(
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
 		observe?: 'events',
+		responseType?: 'json',
 		reportProgress?: boolean,
 	): Observable<HttpEvent<<%- path.response.typeName %>>>;
 	<%- path.name %>(
@@ -70,10 +122,10 @@ export class <%- k.name %>Service {
 		<%_ if (path.request.body) { -%>
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
-		observe: 'body' | 'events' = 'body',
+		observe?: 'events',
+		responseType?: 'blob',
 		reportProgress?: boolean,
-	): Observable<<%- path.response.typeName %> | HttpEvent<<%- path.response.typeName %>>> {
-	<%_ } else { -%>
+	): Observable<HttpEvent<Blob>>;
 	<%- path.name %>(
 		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
 		pathParams: <%- path.request.pathParametersType.name %>,
@@ -88,8 +140,43 @@ export class <%- k.name %>Service {
 		<%_ if (path.request.body) { -%>
 		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
 		<%_ } -%>
-	): Observable<<%- path.response.typeName %>> {
-	<%_ } -%>
+		observe?: 'events',
+		responseType?: 'arraybuffer',
+		reportProgress?: boolean,
+	): Observable<HttpEvent<ArrayBuffer>>;
+	<%- path.name %>(
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+		observe?: 'events',
+		responseType?: 'text',
+		reportProgress?: boolean,
+	): Observable<HttpEvent<string>>;
+	<%- path.name %>(
+		<%_ if (!k.config.inlinePathParameters && path.request.pathParametersType) { -%>
+		pathParams: <%- path.request.pathParametersType.name %>,
+		<%_ } else { -%>
+		<%_ for (const p of (path.request.pathParametersType?.properties ?? [])) { -%>
+		<%- p.name %>: <%- p.type %>,
+		<%_ } -%>
+		<%_ } -%>
+		<%_ if (path.request.queryParametersType) { -%>
+		queryParams: <%- path.request.queryParametersType.name %>,
+		<%_ } -%>
+		<%_ if (path.request.body) { -%>
+		body<%- !path.request.body.required ? '?' : '' %>: <%- path.request.body.typeName %>,
+		<%_ } -%>
+	): Observable<<%- path.response.typeName %> | Blob | ArrayBuffer | string | HttpEvent<<%- path.response.typeName %> | HttpEvent<Blob> | HttpEvent<ArrayBuffer> | HttpEvent<string>> {
 		<%_ if (path.request.queryParametersMapping) { -%>
 		const params = new HttpParams({
 			fromString: toQueryParams({
