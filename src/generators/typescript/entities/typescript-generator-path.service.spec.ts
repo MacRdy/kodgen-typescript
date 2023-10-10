@@ -73,12 +73,7 @@ describe('typescript-generator-path-service', () => {
 	it('should generate three services', () => {
 		const pathDef1 = new Path('', 'GET', { tags: ['tag'] });
 
-		const pathDef2 = new Path('', 'GET', {
-			tags: ['tag'],
-			extensions: { 'x-controller-name': 'controllerName' },
-		});
-
-		const pathDef3 = new Path('', 'GET');
+		const pathDef2 = new Path('', 'GET');
 
 		const storage = new TypescriptGeneratorStorageService();
 		const namingService = new TypescriptGeneratorNamingService();
@@ -106,18 +101,17 @@ describe('typescript-generator-path-service', () => {
 		const doc: IDocument = {
 			info: {},
 			models: [],
-			paths: [pathDef1, pathDef2, pathDef3],
+			paths: [pathDef1, pathDef2],
 			servers: [],
 			tags: [],
 		};
 
 		const result = service.generate(doc, { inlinePathParameters: true });
 
-		expect(result.length).toStrictEqual(3);
+		expect(result.length).toStrictEqual(2);
 
 		expect(result[0]?.templateData!.name).toStrictEqual('tag');
-		expect(result[1]?.templateData!.name).toStrictEqual('controllerName');
-		expect(result[2]?.templateData!.name).toStrictEqual('common');
+		expect(result[1]?.templateData!.name).toStrictEqual('common');
 	});
 
 	it('should generate file (simple)', () => {

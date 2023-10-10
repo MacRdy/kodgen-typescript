@@ -48,12 +48,7 @@ export class TypescriptGeneratorPathService {
 		const commonPaths: Path[] = [];
 
 		for (const path of document.paths) {
-			const controllerName = path.extensions['x-controller-name'];
-
-			if (controllerName && typeof controllerName === 'string') {
-				const controllerPaths = pathsToGenerate[controllerName] ?? [];
-				pathsToGenerate[controllerName] = [...controllerPaths, path];
-			} else if (path.tags?.length) {
+			if (path.tags?.length) {
 				for (const tag of path.tags) {
 					const tagPaths = pathsToGenerate[tag] ?? [];
 
