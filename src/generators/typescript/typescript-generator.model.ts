@@ -161,5 +161,4 @@ export type TsGenGenerateOperationName = (path: Path, modifier?: number) => stri
  */
 export type TsGenResolveSimpleType = (type: string, format?: string) => string | undefined;
 
-export const baseUrlSelector = (document: IDocument): string | undefined =>
-	document.servers[0]?.url;
+export const baseUrlSelector = (document: IDocument): string => document.servers[0]?.url ?? '/';
