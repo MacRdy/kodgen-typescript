@@ -193,7 +193,7 @@ export class <%- k.name %>Service {
 		<%_ } -%>
 		<%_ if (multipart) { -%>
 		const formData = new FormData();
-		Object.entries(body ?? {}).forEach(([key, value]) => formData.append(key, value instanceof Blob ? value : JSON.stringify(value)));
+		Object.entries(body ?? {}).forEach(([key, value]) => formData.append(key, typeof value === 'object' && !(value instanceof Blob) ? JSON.stringify(value) : value ));
 
 		<%_ } -%>
 		return this.http.request<%- path.response.typeName !== 'string' ? `<${path.response.typeName}>` : '' %>(
