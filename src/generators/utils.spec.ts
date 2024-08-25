@@ -11,8 +11,8 @@ describe('utils', () => {
 			expect(toPascalCase('IStringType')).toStrictEqual('IStringType');
 		});
 
-		it('should lower capitals in abbr', () => {
-			expect(toPascalCase('UI')).toStrictEqual('Ui');
+		it('should not` lower capitals in abbr', () => {
+			expect(toPascalCase('UI')).toStrictEqual('UI');
 		});
 
 		it('should not prefix numbers', () => {
