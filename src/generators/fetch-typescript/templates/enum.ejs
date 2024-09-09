@@ -28,7 +28,7 @@ export const <%- k.model.name %> = {
 	<%_ if (jsdocEntryResult) { -%>
 	<%- jsdocEntryResult %>
 	<%_ } -%>
-	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %>',
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %>: <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %> as <%- k.model.name %>,
 	<%_ } -%>
 } as const;
 <%_ } -%>
