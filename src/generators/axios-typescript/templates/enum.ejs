@@ -9,7 +9,7 @@ export enum <%- k.model.name %> {
 	<%_ if (jsdocEntryResult) { -%>
 <%- jsdocEntryResult %>
 	<%_ } -%>
-	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %>',
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %>,
 	<%_ } -%>
 }
 <%_ } else { -%>
@@ -28,7 +28,7 @@ export const <%- k.model.name %> = {
 	<%_ if (jsdocEntryResult) { -%>
 	<%- jsdocEntryResult %>
 	<%_ } -%>
-	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %>',
+	<%- !k.isValidName(entry.name) ? `'${entry.name}'` : entry.name %> = <%- k.model.isStringlyTyped ? `'${entry.value}'` : entry.value %>,
 	<%_ } -%>
 } as const;
 <%_ } -%>
