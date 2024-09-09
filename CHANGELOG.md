@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/MacRdy/kodgen-typescript/compare/v0.1.1...v0.1.2) (2024-09-09)
+
+
+### Bug Fixes
+
+* remove bad enum quotes ([#4](https://github.com/MacRdy/kodgen-typescript/issues/4)) ([98222e3](https://github.com/MacRdy/kodgen-typescript/commit/98222e3134f66edbb03efcec81662314648ca726))
+
 ## [0.1.1](https://github.com/MacRdy/kodgen-typescript/compare/v0.1.0...v0.1.1) (2024-09-08)
 
 
