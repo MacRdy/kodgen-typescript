@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/MacRdy/kodgen-typescript/compare/v0.1.3...v0.1.4) (2024-12-28)
+
+
+### Bug Fixes
+
+* custom baseUrl providers ([#8](https://github.com/MacRdy/kodgen-typescript/issues/8)) ([1b15033](https://github.com/MacRdy/kodgen-typescript/commit/1b15033344d0e8c36c7a55fa0b0189287de6d67b))
+
 ## [0.1.3](https://github.com/MacRdy/kodgen-typescript/compare/v0.1.2...v0.1.3) (2024-09-09)
 
 
