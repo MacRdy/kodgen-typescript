@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { toQueryParams } from '<%- k.relativeTo('./internals') %>';
+import { toQueryParams } from '<%- k.relativeTo('./utilities') %>';
 <%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <% } %>
