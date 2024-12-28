@@ -1,4 +1,8 @@
-const baseUrl = '<%- k.baseUrl %>';
+export const KODGEN = {
+	baseUrl: undefined,
+} as const;
+
+const getBaseUrl = () => typeof KODGEN.baseUrl !== undefined ? (KODGEN.baseUrl ?? '') : '<%- k.baseUrl %>';
 
 export const apiRequest = <T>(config: {
 	method: string,
@@ -11,7 +15,7 @@ export const apiRequest = <T>(config: {
 
 	const fetchUrl = params ? `${url}?${params}` : url;
 
-	return fetch(`${baseUrl}${fetchUrl}`, { method, data })
+	return fetch(`${getBaseUrl()}${fetchUrl}`, { method, data })
 		.then(res => {
 			if (!res.ok) {
 				throw new Error(`HTTP Error (${res.status}: ${res.statusText})`);

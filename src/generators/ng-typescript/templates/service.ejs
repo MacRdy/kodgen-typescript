@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { HttpClient, HttpParams, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { toQueryParams } from '<%- k.relativeTo('./utilities') %>';
+import { BASE_URL, toQueryParams } from '<%- k.relativeTo('./utilities') %>';
 <%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <% } %>
@@ -12,9 +12,14 @@ import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <%_ } -%>
 @Injectable({ providedIn: 'root' })
 export class <%- k.name %>Service {
-	private readonly baseUrl = '<%- k.baseUrl %>';
+	private readonly baseUrl: string;
 
-	constructor(private readonly http: HttpClient) {}
+	constructor(
+		private readonly http: HttpClient,
+		@Optional() @Inject(BASE_URL) baseUrl?: string,
+	) {
+		this.baseUrl = baseUrl === null ? '<%- k.baseUrl %>' : (baseUrl ?? '');
+	}
 	<%_ for (const path of k.paths) { -%>
 
 	<%_ const responseType = path.response.typeName === 'string' ? 'text' : 'json' -%>

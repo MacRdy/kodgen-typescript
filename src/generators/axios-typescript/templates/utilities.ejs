@@ -1,8 +1,12 @@
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
-const client = axios.create({
-    baseURL: '<%- k.baseUrl %>',
-});
+export const KODGEN = {
+	baseUrl: undefined,
+} as const;
+
+const getBaseUrl = () => typeof KODGEN.baseUrl !== undefined ? (KODGEN.baseUrl ?? '') : '<%- k.baseUrl %>';
+
+const client = axios.create();
 
 export const apiRequest = <T>(config: {
 	method: string,
@@ -16,7 +20,7 @@ export const apiRequest = <T>(config: {
 
 	const axiosConfig: AxiosRequestConfig = {
 		method,
-		url,
+		url: `${getBaseUrl()}${url}`,
 		data,
 		responseType,
 		onUploadProgress,
