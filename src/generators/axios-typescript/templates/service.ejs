@@ -1,6 +1,6 @@
 import { AxiosProgressEvent } from 'axios';
 
-import { apiRequest, toQueryParams } from '<%- k.relativeTo('./internals') %>';
+import { apiRequest, toQueryParams } from '<%- k.relativeTo('./utilities') %>';
 <%_ for (const importEntry of k.getImportEntries()) { -%>
 import { <%- importEntry.keys.join(', ') %> } from '<%- importEntry.path %>';
 <%_ } -%>

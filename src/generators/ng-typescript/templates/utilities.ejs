@@ -1,25 +1,6 @@
-const baseUrl = '<%- k.baseUrl %>';
+import { InjectionToken } from '@angular/core';
 
-export const apiRequest = <T>(config: {
-	method: string,
-	url: string,
-	params?: string,
-	data?: unknown,
-	responseType?: 'text',
-}): Promise<T> => {
-	const { method, url, responseType, data, params } = config;
-
-	const fetchUrl = params ? `${url}?${params}` : url;
-
-	return fetch(`${baseUrl}${fetchUrl}`, { method, data })
-		.then(res => {
-			if (!res.ok) {
-				throw new Error(`HTTP Error (${res.status}: ${res.statusText})`);
-			}
-
-			return responseType === 'text' ? res.text() : res.json();
-		});
-}
+export const BASE_URL = new InjectionToken<string>('KODGEN_BASE_URL');
 
 export const toQueryParams = (params: Record<string, unknown>, prefix?: string): string => {
 	const queryParams: string[] = [];

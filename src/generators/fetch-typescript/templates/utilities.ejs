@@ -1,32 +1,28 @@
-import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
+export const KODGEN = {
+	baseUrl: undefined,
+} as const;
 
-const client = axios.create({
-    baseURL: '<%- k.baseUrl %>',
-});
+const getBaseUrl = () => typeof KODGEN.baseUrl !== undefined ? (KODGEN.baseUrl ?? '') : '<%- k.baseUrl %>';
 
 export const apiRequest = <T>(config: {
 	method: string,
 	url: string,
 	params?: string,
 	data?: unknown,
-	responseType?: 'text' | 'json',
-	onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
+	responseType?: 'text',
 }): Promise<T> => {
-	const { method, url, responseType, data, onUploadProgress, params } = config;
+	const { method, url, responseType, data, params } = config;
 
-	const axiosConfig: AxiosRequestConfig = {
-		method,
-		url,
-		data,
-		responseType,
-		onUploadProgress,
-	};
+	const fetchUrl = params ? `${url}?${params}` : url;
 
-	if (params) {
-		axiosConfig.params = new URLSearchParams(params);
-	}
+	return fetch(`${getBaseUrl()}${fetchUrl}`, { method, data })
+		.then(res => {
+			if (!res.ok) {
+				throw new Error(`HTTP Error (${res.status}: ${res.statusText})`);
+			}
 
-	return client.request<T>(axiosConfig).then(x => x.data);
+			return responseType === 'text' ? res.text() : res.json();
+		});
 }
 
 export const toQueryParams = (params: Record<string, unknown>, prefix?: string): string => {

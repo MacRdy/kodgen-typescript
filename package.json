@@ -2,6 +2,13 @@
 	"name": "kodgen-typescript",
 	"version": "0.1.3",
 	"description": "typescript generators for kodgen",
+	"keywords": [
+		"typescript",
+		"swagger",
+		"openapi",
+		"codegen",
+		"kodgen"
+	],
 	"main": "dist/src/index.js",
 	"types": "dist/src/index.d.ts",
 	"scripts": {

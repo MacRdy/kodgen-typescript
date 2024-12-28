@@ -33,8 +33,8 @@ export class NgTypescriptGeneratorService extends TypescriptGeneratorService {
 		const files = super.generate(doc, config);
 
 		files.push({
-			path: 'internals.ts',
-			template: 'internals',
+			path: 'utilities.ts',
+			template: 'utilities',
 		});
 
 		return files;
